@@ -4,7 +4,7 @@ A robotics library for Python
 **Used in**
 
 J. Haviland and P. Corke, "Maximising  manipulability  during  resolved-rate  motion control," _arXiv preprint arXiv:2002.11901_, 2020.
-[[arxiv](https://arxiv.org/abs/2002.11901)] [[Project Website](https://jhavl.github.io/mmc)]
+[[arxiv](https://arxiv.org/abs/2002.11901)] [[project website](https://jhavl.github.io/mmc)] [[video](https://youtu.be/zBGLPoPNZ10)]
 
 
 ## Installing
@@ -79,7 +79,7 @@ wTe = panda.T
 # The desired pose of the robot
 # = Current pose offset 20cm in the x-axis
 wTep = np.copy(wTe)
-wTep[0,0] += 0.2
+wTep[0,3] += 0.2
 
 # Gain term (lambda) for control minimisation
 Y = 0.005
@@ -134,7 +134,7 @@ wTe = panda.T
 # The desired pose of the robot
 # = Current pose offset 20cm in the x-axis
 wTep = np.copy(wTe)
-wTep[0,0] += 0.2
+wTep[0,3] += 0.2
 
 arrived = False
 while not arrived:
