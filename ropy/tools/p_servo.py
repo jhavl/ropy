@@ -42,7 +42,7 @@ def p_servo(wTe, wTep, gain = 3, threshold = 0.1):
     """
 
     # Pose difference
-    eTep = np.linalg.inv(wTe) @ wTep
+    eTep = np.matmul(np.linalg.inv(wTe), wTep)
 
     # Translational velocity error
     ev = eTep[0:3,-1]

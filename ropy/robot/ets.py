@@ -311,7 +311,7 @@ class ets(object):
             else:
                 T = self._ets[i]['T']
 
-            trans = trans @ T
+            trans = np.matmul(trans, T)
 
         return trans
 
@@ -369,7 +369,7 @@ class ets(object):
             J[0:3,i] = dT[i][0:3,3]
 
             # Angular velocity component of the Jacobian
-            J[3:7,i] = np.squeeze(self._vex( dT[i][0:3,0:3] @ np.transpose(R) ))
+            J[3:7,i] = np.squeeze(self._vex( np.matmul(dT[i][0:3,0:3], np.transpose(R)) ))
 
         return J
 
@@ -434,8 +434,8 @@ class ets(object):
                 # Linear velocity component of the Hessian
                 H[0:3,i,j] = ddT[i][j][0:3,3]
 
-                sw = ddT[j][i][0:3,0:3] @ np.transpose(R) + \
-                    dT[i][0:3,0:3] @ np.transpose(dT[j][0:3,0:3])
+                sw = np.matmul(ddT[j][i][0:3,0:3], np.transpose(R)) + \
+                    np.matmul(dT[i][0:3,0:3], np.transpose(dT[j][0:3,0:3]))
 
                 H[3:7,i,j] = np.squeeze(self._vex(sw))
 
@@ -494,7 +494,7 @@ class ets(object):
 
         J = self.jacob0(q)
 
-        return np.sqrt(np.linalg.det(J @ np.transpose(J)))
+        return np.sqrt(np.linalg.det(np.matmul(J, np.transpose(J))))
 
 
 
@@ -546,14 +546,14 @@ class ets(object):
         H = self.hess(q)
 
         t2 = time.time()
-        b = np.linalg.inv(J @ np.transpose(J))
+        b = np.linalg.inv(np.matmul(J, np.transpose(J)))
         t3 = time.time()
 
         a = np.zeros((self._joints,1))
 
         for i in range(self._joints):
-            c = J @ np.transpose(H[:,:,i])
-            a[i,0] = m * np.transpose(c.flatten('F')) @ b.flatten('F')
+            c = np.matmul(J, np.transpose(H[:,:,i]))
+            a[i,0] = m * np.matmul(np.transpose(c.flatten('F')), b.flatten('F'))
 
         t4 = time.time()
 
@@ -612,16 +612,16 @@ class ets(object):
                     if i == self._q_idx[k]:
                         #  Multiply by the partial differentiation
                         s = self._ets[i]['s']
-                        dT[k] = dT[k] @ self._ets[i]['dT'](s, q[k])
+                        dT[k] = np.matmul(dT[k], self._ets[i]['dT'](s, q[k]))
                         l += 1
                     else:
                         s = self._ets[i]['s']
-                        dT[k] = dT[k] @ self._ets[i]['T'](s, q[l])
+                        dT[k] = np.matmul(dT[k], self._ets[i]['T'](s, q[l]))
                         l += 1
                     
                 else:
                     # The current T is static
-                    dT[k] = dT[k] @ self._ets[i]['T']
+                    dT[k] = np.matmul(dT[k], self._ets[i]['T'])
         
         return dT
 
@@ -667,23 +667,23 @@ class ets(object):
 
                     if i == self._q_idx[k] and i == self._q_idx[j]:
                         # Multiply by the double partial differentiation
-                        ddT[j,:,:] = ddT[j,:,:] @ self._ets[i]['ddT'](s, q[k])
+                        ddT[j,:,:] = np.matmul(ddT[j,:,:], self._ets[i]['ddT'](s, q[k]))
                         l += 1
                     elif i == self._q_idx[k]: 
                         #  Multiply by the partial differentiation
-                        ddT[j,:,:] = ddT[j,:,:] @ self._ets[i]['dT'](s, q[k])
+                        ddT[j,:,:] = np.matmul(ddT[j,:,:], self._ets[i]['dT'](s, q[k]))
                         l += 1
                     elif i == self._q_idx[j]:
                         #  Multiply by the partial differentiation
-                        ddT[j,:,:] = ddT[j,:,:] @ self._ets[i]['dT'](s, q[j])
+                        ddT[j,:,:] = np.matmul(ddT[j,:,:], self._ets[i]['dT'](s, q[j]))
                         l += 1
                     else:
-                        ddT[j,:,:] = ddT[j,:,:] @ self._ets[i]['T'](s, q[l])
+                        ddT[j,:,:] = np.matmul(ddT[j,:,:], self._ets[i]['T'](s, q[l]))
                         l += 1
                     
                 else:
                     # The current T is static
-                    ddT[j,:,:] = ddT[j,:,:] @ self._ets[i]['T']
+                    ddT[j,:,:] = np.matmul(ddT[j,:,:], self._ets[i]['T'])
 
         return ddT
 
@@ -917,7 +917,7 @@ class ets(object):
             # Linear velocity component of the Jacobian
             Jt[:,i] = dT[i][0:3,3]
 
-            Jw[:,:,i] = dT[i][0:3,0:3] @ np.transpose(R)
+            Jw[:,:,i] = np.matmul(dT[i][0:3,0:3], np.transpose(R))
 
         t3 = time.time()
 
@@ -944,10 +944,10 @@ class ets(object):
         for j in range(self._joints):
             for i in range(j, self._joints):
 
-                H[:3,i,j] = Jw[:,:,j] @ Jt[:3,i]
+                H[:3,i,j] = np.matmul(Jw[:,:,j], Jt[:3,i])
 
                 H[3:,i,j] = np.squeeze(self._vex(
-                    Jw[:,:,j] @ Jw[:,:,i] + Jw[:,:,i] @ -Jw[:,:,j]
+                    np.matmul(Jw[:,:,j], Jw[:,:,i]) + np.matmul(Jw[:,:,i], -Jw[:,:,j])
                 ))
                 
                 if i != j:
@@ -986,7 +986,7 @@ class ets(object):
             Jt[:,i] = dT[i][0:3,3]
             J[0:3,i] = dT[i][0:3,3]
 
-            temp = dT[i][0:3,0:3] @ np.transpose(R)
+            temp = np.matmul(dT[i][0:3,0:3], np.transpose(R))
             Jw[:,:,i] = temp
             J[3:7,i] = np.squeeze(self._vex( temp ))
 
@@ -1005,10 +1005,10 @@ class ets(object):
         for j in range(self._joints):
             for i in range(j, self._joints):
 
-                H[:3,i,j] = Jw[:,:,j] @ Jt[:3,i]
+                H[:3,i,j] = np.matmul(Jw[:,:,j], Jt[:3,i])
 
                 H[3:,i,j] = np.squeeze(self._vex(
-                    Jw[:,:,j] @ Jw[:,:,i] + Jw[:,:,i] @ -Jw[:,:,j]
+                    np.matmul(Jw[:,:,j], Jw[:,:,i]) + np.matmul(Jw[:,:,i], -Jw[:,:,j])
                 ))
                 
                 if i != j:
@@ -1023,7 +1023,7 @@ class ets(object):
         if q.shape != (self._joints,):
             raise ValueError('q must be a 1 dim (n,) array')
 
-        return np.sqrt(np.linalg.det(J @ np.transpose(J)))
+        return np.sqrt(np.linalg.det(np.matmul(J, np.transpose(J))))
 
 
     def Jm_fast(self, q):
@@ -1042,14 +1042,14 @@ class ets(object):
         H = self.hess_fast(q, Jt, Jw)
 
         t3 = time.time()
-        b = np.linalg.inv(J @ np.transpose(J))
+        b = np.linalg.inv(np.matmul(J, np.transpose(J)))
 
         t4 = time.time()
         a = np.zeros((self._joints,1))
 
         for i in range(self._joints):
-            c = J @ np.transpose(H[:,:,i])
-            a[i,0] = m * np.transpose(c.flatten('F')) @ b.flatten('F')
+            c = np.matmul(J, np.transpose(H[:,:,i]))
+            a[i,0] = m * np.matmul(np.transpose(c.flatten('F')), b.flatten('F'))
 
         t5 = time.time()
 

@@ -344,7 +344,7 @@ class SerialLink(object):
     """
     def jacobe(self, q):
         J0 = self._ets.jacob0(q)
-        Je = self.jacobev(q) @ J0
+        Je = np.matmul(self.jacobev(q), J0)
         return Je
 
 

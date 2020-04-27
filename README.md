@@ -9,7 +9,7 @@ J. Haviland and P. Corke, "Maximising  manipulability  during  resolved-rate  mo
 
 ## Installing
 
-Requires Python ≥ 3.2
+Requires Python ≥ 2.7
 
 ```shell script
 git clone https://github.com/jhavl/ropy.git
@@ -149,7 +149,7 @@ while not arrived:
     
     # Solve for the joint velocities dq
     # Perfrom the pseudoinverse of the manipulator Jacobian in the end-effector frame
-    dq = np.linalg.pinv(panda.Je) @ v
+    dq = np.matmul(np.linalg.pinv(panda.Je), v)
 
     # Send the joint velocities to the robot
     # eg. ROS messages, PyRep etc.
