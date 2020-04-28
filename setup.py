@@ -1,13 +1,21 @@
 from setuptools import setup, find_packages
+from os import path
+
+here = path.abspath(path.dirname(__file__))
+
+# Get the long description from the README file
+with open(path.join(here, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
 
 setup(
     name='ropy',
 
-    version='0.1',
+    version='0.1.1',
 
     description='A Python library for robot control',
 
-    long_description='ropy is a tool which can be used to interface with robos.',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
 
     url='https://github.com/jhavl/ropy',
 
@@ -16,6 +24,8 @@ setup(
     license='MIT',
 
     python_requires='>=2.7',
+    
+    keywords='robotics vision arm kinematics ros',
 
     packages=find_packages(),
 
