@@ -2779,7 +2779,29 @@
             <span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rne_ob</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_rne_init</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_rne_changed</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_rne_ob</span> <span class="o">=</span> <span class="kc">None</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rne_ob</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="SerialLink.paycap"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.paycap">[docs]</a>    <span class="k">def</span> <span class="nf">paycap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">tlim</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Static payload capacity of a robot</span>
+
+<span class="sd">        wmax, J = paycap(q, w, f, tlim) returns the maximum permissible</span>
+<span class="sd">        payload wrench WMAX (1x6) applied at the end-effector, and the index</span>
+<span class="sd">        of the joint J which hits its force/torque limit at that wrench. q (n)</span>
+<span class="sd">        is the manipulator pose, w the payload wrench (6), f the wrench</span>
+<span class="sd">        reference frame and tlim (nx2) is a matrix of joint forces/torques</span>
+<span class="sd">        (first row is maximum, second row minimum).</span>
+
+<span class="sd">        Trajectory operation:</span>
+<span class="sd">        In the case q is nxm then wmax is Mx6 and J is Mx1 where the rows are the</span>
+<span class="sd">        results at the pose given by corresponding row of Q.</span>
+
+<span class="sd">        :notes:</span>
+<span class="sd">            - Wrench vector and Jacobian must be from the same reference frame</span>
+<span class="sd">            - Tool transforms are taken into consideration for F = &#39;e&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">pass</span></div></div>
 </pre></div>
 
           </div>
