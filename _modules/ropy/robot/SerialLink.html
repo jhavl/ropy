@@ -50,7 +50,7 @@
 <span class="kn">from</span> <span class="nn">frne</span> <span class="kn">import</span> <span class="n">init</span><span class="p">,</span> <span class="n">frne</span><span class="p">,</span> <span class="n">delete</span>
 
 
-<div class="viewcode-block" id="SerialLink"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink">[docs]</a><span class="k">class</span> <span class="nc">SerialLink</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink">[docs]</a><span class="k">class</span> <span class="nc">SerialLink</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A superclass for arm type robots. A concrete class that represents a</span>
 <span class="sd">    serial-link arm-type robot.  Each link and joint in the chain is</span>
@@ -310,7 +310,7 @@
     <span class="k">def</span> <span class="nf">q</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q_new</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_q</span> <span class="o">=</span> <span class="n">getvector</span><span class="p">(</span><span class="n">q_new</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
 
-<div class="viewcode-block" id="SerialLink.A"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.A">[docs]</a>    <span class="k">def</span> <span class="nf">A</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">joints</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.A"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.A">[docs]</a>    <span class="k">def</span> <span class="nf">A</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">joints</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Link forward kinematics.</span>
 
@@ -362,7 +362,7 @@
 
         <span class="k">return</span> <span class="n">T</span></div>
 
-<div class="viewcode-block" id="SerialLink.islimit"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.islimit">[docs]</a>    <span class="k">def</span> <span class="nf">islimit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.islimit"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.islimit">[docs]</a>    <span class="k">def</span> <span class="nf">islimit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Joint limit test.</span>
 
@@ -394,7 +394,7 @@
 
         <span class="k">return</span> <span class="n">v</span></div>
 
-<div class="viewcode-block" id="SerialLink.isspherical"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.isspherical">[docs]</a>    <span class="k">def</span> <span class="nf">isspherical</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.isspherical"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.isspherical">[docs]</a>    <span class="k">def</span> <span class="nf">isspherical</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Test for spherical wrist. Tests if the robot has a spherical wrist,</span>
 <span class="sd">        that is, the last 3 axes are revolute and their axes intersect at</span>
@@ -420,7 +420,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="SerialLink.payload"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.payload">[docs]</a>    <span class="k">def</span> <span class="nf">payload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)):</span>
+<div class="viewcode-block" id="SerialLink.payload"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.payload">[docs]</a>    <span class="k">def</span> <span class="nf">payload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        payload(m, p) adds payload mass adds a payload with point mass m at</span>
 <span class="sd">        position p in the end-effector coordinate frame.</span>
@@ -443,7 +443,7 @@
         <span class="n">lastlink</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="n">m</span>
         <span class="n">lastlink</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="n">p</span></div>
 
-<div class="viewcode-block" id="SerialLink.jointdynamics"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.jointdynamics">[docs]</a>    <span class="k">def</span> <span class="nf">jointdynamics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">qd</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.jointdynamics"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.jointdynamics">[docs]</a>    <span class="k">def</span> <span class="nf">jointdynamics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">qd</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Transfer function of joint actuator.</span>
 
@@ -466,7 +466,7 @@
         <span class="c1"># TODO a tf object implementation?</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="SerialLink.isprismatic"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.isprismatic">[docs]</a>    <span class="k">def</span> <span class="nf">isprismatic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.isprismatic"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.isprismatic">[docs]</a>    <span class="k">def</span> <span class="nf">isprismatic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Identify prismatic joints.</span>
 
@@ -486,7 +486,7 @@
 
         <span class="k">return</span> <span class="n">p</span></div>
 
-<div class="viewcode-block" id="SerialLink.isrevolute"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.isrevolute">[docs]</a>    <span class="k">def</span> <span class="nf">isrevolute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.isrevolute"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.isrevolute">[docs]</a>    <span class="k">def</span> <span class="nf">isrevolute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Identify revolute joints.</span>
 
@@ -506,7 +506,7 @@
 
         <span class="k">return</span> <span class="n">p</span></div>
 
-<div class="viewcode-block" id="SerialLink.todegrees"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.todegrees">[docs]</a>    <span class="k">def</span> <span class="nf">todegrees</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.todegrees"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.todegrees">[docs]</a>    <span class="k">def</span> <span class="nf">todegrees</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Convert joint angles to degrees.</span>
 
@@ -536,7 +536,7 @@
         <span class="n">qdeg</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">*=</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
         <span class="k">return</span> <span class="n">qdeg</span></div>
 
-<div class="viewcode-block" id="SerialLink.toradians"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.toradians">[docs]</a>    <span class="k">def</span> <span class="nf">toradians</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.toradians"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.toradians">[docs]</a>    <span class="k">def</span> <span class="nf">toradians</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Convert joint angles to radians.</span>
 
@@ -560,7 +560,7 @@
         <span class="n">qrad</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span>
         <span class="k">return</span> <span class="n">qrad</span></div>
 
-<div class="viewcode-block" id="SerialLink.twists"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.twists">[docs]</a>    <span class="k">def</span> <span class="nf">twists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.twists"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.twists">[docs]</a>    <span class="k">def</span> <span class="nf">twists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Joint axis twists.</span>
 
@@ -590,7 +590,7 @@
 
         <span class="c1"># TODO Implement this</span>
 
-<div class="viewcode-block" id="SerialLink.fkine"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.fkine">[docs]</a>    <span class="k">def</span> <span class="nf">fkine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.fkine"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.fkine">[docs]</a>    <span class="k">def</span> <span class="nf">fkine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        T = fkine(q) evaluates forward kinematics for the robot at joint</span>
 <span class="sd">        configuration q.</span>
@@ -650,7 +650,7 @@
 
         <span class="k">return</span> <span class="n">t</span></div>
 
-<div class="viewcode-block" id="SerialLink.allfkine"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.allfkine">[docs]</a>    <span class="k">def</span> <span class="nf">allfkine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.allfkine"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.allfkine">[docs]</a>    <span class="k">def</span> <span class="nf">allfkine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Tall = allfkine(q) evaluates fkine for each joint within a robot and</span>
 <span class="sd">        returns a trajecotry of poses.</span>
@@ -690,13 +690,13 @@
 
         <span class="k">return</span> <span class="n">Tall</span></div>
 
-<div class="viewcode-block" id="SerialLink.jacobe"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.jacobe">[docs]</a>    <span class="k">def</span> <span class="nf">jacobe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.jacobe"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.jacobe">[docs]</a>    <span class="k">def</span> <span class="nf">jacobe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Je = jacobe(q) is the manipulator Jacobian matrix which maps joint</span>
 <span class="sd">        velocity to end-effector spatial velocity. v = Je*qd in the</span>
 <span class="sd">        end-effector frame.</span>
 
-<span class="sd">        Je = jacobe(q) as above except uses the stored q value of the</span>
+<span class="sd">        Je = jacobe() as above except uses the stored q value of the</span>
 <span class="sd">        robot object.</span>
 
 <span class="sd">        :param q: The joint angles/configuration of the robot (Optional,</span>
@@ -745,13 +745,13 @@
 
         <span class="k">return</span> <span class="n">J</span></div>
 
-<div class="viewcode-block" id="SerialLink.jacob0"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.jacob0">[docs]</a>    <span class="k">def</span> <span class="nf">jacob0</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.jacob0"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.jacob0">[docs]</a>    <span class="k">def</span> <span class="nf">jacob0</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        J0 = jacob0(q) is the manipulator Jacobian matrix which maps joint</span>
 <span class="sd">        velocity to end-effector spatial velocity. v = J0*qd in the</span>
 <span class="sd">        base frame.</span>
 
-<span class="sd">        J0 = jacob0(q) as above except uses the stored q value of the</span>
+<span class="sd">        J0 = jacob0() as above except uses the stored q value of the</span>
 <span class="sd">        robot object.</span>
 
 <span class="sd">        :param q: The joint angles/configuration of the robot (Optional,</span>
@@ -772,13 +772,13 @@
 
         <span class="k">return</span> <span class="n">J0</span></div>
 
-<div class="viewcode-block" id="SerialLink.jacob0v"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.jacob0v">[docs]</a>    <span class="k">def</span> <span class="nf">jacob0v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.jacob0v"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.jacob0v">[docs]</a>    <span class="k">def</span> <span class="nf">jacob0v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Jv = jacob0v(q) is the spatial velocity Jacobian, at joint</span>
 <span class="sd">        configuration q, which relates the velocity in the end-effector frame</span>
 <span class="sd">        to velocity in the base frame</span>
 
-<span class="sd">        Jv = jacob0v(q) as above except uses the stored q value of the</span>
+<span class="sd">        Jv = jacob0v() as above except uses the stored q value of the</span>
 <span class="sd">        robot object.</span>
 
 <span class="sd">        :param q: The joint angles/configuration of the robot (Optional,</span>
@@ -786,7 +786,7 @@
 <span class="sd">        :type q: float ndarray(n)</span>
 
 <span class="sd">        :returns J: The velocity Jacobian in 0 frame</span>
-<span class="sd">        :rtype J: float ndarray(6,n)</span>
+<span class="sd">        :rtype J: float ndarray(6,6)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -803,13 +803,13 @@
 
         <span class="k">return</span> <span class="n">Jv</span></div>
 
-<div class="viewcode-block" id="SerialLink.jacobev"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.jacobev">[docs]</a>    <span class="k">def</span> <span class="nf">jacobev</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.jacobev"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.jacobev">[docs]</a>    <span class="k">def</span> <span class="nf">jacobev</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Jv = jacobev(q) is the spatial velocity Jacobian, at joint</span>
 <span class="sd">        configuration q, which relates the velocity in the base frame to the</span>
 <span class="sd">        velocity in the end-effector frame.</span>
 
-<span class="sd">        Jv = jacobev(q) as above except uses the stored q value of the</span>
+<span class="sd">        Jv = jacobev() as above except uses the stored q value of the</span>
 <span class="sd">        robot object.</span>
 
 <span class="sd">        :param q: The joint angles/configuration of the robot (Optional,</span>
@@ -817,7 +817,7 @@
 <span class="sd">        :type q: float ndarray(n)</span>
 
 <span class="sd">        :returns J: The velocity Jacobian in ee frame</span>
-<span class="sd">        :rtype J: float ndarray(6,n)</span>
+<span class="sd">        :rtype J: float ndarray(6,6)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -835,7 +835,7 @@
 
         <span class="k">return</span> <span class="n">Jv</span></div>
 
-<div class="viewcode-block" id="SerialLink.accel"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.accel">[docs]</a>    <span class="k">def</span> <span class="nf">accel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qd</span><span class="p">,</span> <span class="n">torque</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.accel"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.accel">[docs]</a>    <span class="k">def</span> <span class="nf">accel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qd</span><span class="p">,</span> <span class="n">torque</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        qdd = accel(qd, torque, q) calculates a vector (n) of joint</span>
 <span class="sd">        accelerations that result from applying the actuator force/torque (n)</span>
@@ -916,7 +916,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">qdd</span></div>
 
-<div class="viewcode-block" id="SerialLink.nofriction"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.nofriction">[docs]</a>    <span class="k">def</span> <span class="nf">nofriction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coulomb</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">viscous</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.nofriction"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.nofriction">[docs]</a>    <span class="k">def</span> <span class="nf">nofriction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coulomb</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">viscous</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        NFrobot = nofriction(coulomb, viscous) copies the robot and returns</span>
 <span class="sd">        a robot with the same parameters except, the Coulomb and/or viscous</span>
@@ -949,7 +949,7 @@
             <span class="n">tool</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="p">,</span>
             <span class="n">gravity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gravity</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SerialLink.pay"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.pay">[docs]</a>    <span class="k">def</span> <span class="nf">pay</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">J</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.pay"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.pay">[docs]</a>    <span class="k">def</span> <span class="nf">pay</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">J</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        tau = pay(W, J) Returns the generalised joint force/torques due to a</span>
 <span class="sd">        payload wrench W applied to the end-effector. Where the manipulator</span>
@@ -1041,7 +1041,7 @@
 
         <span class="k">return</span> <span class="n">tau</span></div>
 
-<div class="viewcode-block" id="SerialLink.friction"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.friction">[docs]</a>    <span class="k">def</span> <span class="nf">friction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qd</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.friction"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.friction">[docs]</a>    <span class="k">def</span> <span class="nf">friction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qd</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        tau = friction(qd) calculates the vector of joint friction</span>
 <span class="sd">        forces/torques for the robot moving with joint velocities qd.</span>
@@ -1083,7 +1083,7 @@
 
         <span class="k">return</span> <span class="n">tau</span></div>
 
-<div class="viewcode-block" id="SerialLink.cinertia"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.cinertia">[docs]</a>    <span class="k">def</span> <span class="nf">cinertia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.cinertia"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.cinertia">[docs]</a>    <span class="k">def</span> <span class="nf">cinertia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        M = cinertia(q) is the nxn Cartesian (operational space) inertia</span>
 <span class="sd">        matrix which relates Cartesian force/torque to Cartesian</span>
@@ -1129,7 +1129,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Mt</span></div>
 
-<div class="viewcode-block" id="SerialLink.inertia"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.inertia">[docs]</a>    <span class="k">def</span> <span class="nf">inertia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.inertia"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.inertia">[docs]</a>    <span class="k">def</span> <span class="nf">inertia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        SerialLink.INERTIA Manipulator inertia matrix</span>
 
@@ -1186,7 +1186,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">In</span></div>
 
-<div class="viewcode-block" id="SerialLink.coriolis"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.coriolis">[docs]</a>    <span class="k">def</span> <span class="nf">coriolis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qd</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.coriolis"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.coriolis">[docs]</a>    <span class="k">def</span> <span class="nf">coriolis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qd</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        C = coriolis(qd, q) calculates the Coriolis/centripetal matrix (nxn)</span>
 <span class="sd">        for the robot in configuration q and velocity qd, where n is the</span>
@@ -1275,7 +1275,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">C</span></div>
 
-<div class="viewcode-block" id="SerialLink.itorque"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.itorque">[docs]</a>    <span class="k">def</span> <span class="nf">itorque</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qdd</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.itorque"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.itorque">[docs]</a>    <span class="k">def</span> <span class="nf">itorque</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qdd</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Inertia torque</span>
 
@@ -1326,7 +1326,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">taui</span></div>
 
-<div class="viewcode-block" id="SerialLink.gravjac"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.gravjac">[docs]</a>    <span class="k">def</span> <span class="nf">gravjac</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">grav</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.gravjac"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.gravjac">[docs]</a>    <span class="k">def</span> <span class="nf">gravjac</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">grav</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        tauB = gravjac(q, grav) calculates the generalised joint force/torques</span>
 <span class="sd">        due to gravity.</span>
@@ -1452,7 +1452,7 @@
         <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">c</span>
 
-<div class="viewcode-block" id="SerialLink.gravload"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.gravload">[docs]</a>    <span class="k">def</span> <span class="nf">gravload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">grav</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.gravload"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.gravload">[docs]</a>    <span class="k">def</span> <span class="nf">gravload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">grav</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        taug = gravload(q, grav) calculates the joint gravity loading (n) for</span>
 <span class="sd">        the robot in the joint configuration q, and the gravitational load</span>
@@ -1507,7 +1507,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">taug</span></div>
 
-<div class="viewcode-block" id="SerialLink.ikcon"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.ikcon">[docs]</a>    <span class="k">def</span> <span class="nf">ikcon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">q0</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.ikcon"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.ikcon">[docs]</a>    <span class="k">def</span> <span class="nf">ikcon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">q0</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Inverse kinematics by optimization with joint limits</span>
 
@@ -1597,7 +1597,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">qstar</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">exitflag</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">error</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="SerialLink.ikine"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.ikine">[docs]</a>    <span class="k">def</span> <span class="nf">ikine</span><span class="p">(</span>
+<div class="viewcode-block" id="SerialLink.ikine"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.ikine">[docs]</a>    <span class="k">def</span> <span class="nf">ikine</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span>
             <span class="n">ilimit</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
             <span class="n">rlimit</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
@@ -1882,7 +1882,7 @@
 
         <span class="k">return</span> <span class="n">qt</span><span class="p">,</span> <span class="ow">not</span> <span class="n">failed</span><span class="p">,</span> <span class="n">err</span></div>
 
-<div class="viewcode-block" id="SerialLink.ikine3"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.ikine3">[docs]</a>    <span class="k">def</span> <span class="nf">ikine3</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">elbow_up</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.ikine3"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.ikine3">[docs]</a>    <span class="k">def</span> <span class="nf">ikine3</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">elbow_up</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Analytical inverse kinematics for three link robots</span>
 
@@ -2019,7 +2019,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">qt</span></div>
 
-<div class="viewcode-block" id="SerialLink.ikine6s"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.ikine6s">[docs]</a>    <span class="k">def</span> <span class="nf">ikine6s</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">elbow_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">wrist_flip</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.ikine6s"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.ikine6s">[docs]</a>    <span class="k">def</span> <span class="nf">ikine6s</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">elbow_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">wrist_flip</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Analytical inverse kinematics</span>
 
@@ -2467,7 +2467,7 @@
 
         <span class="k">return</span> <span class="n">s</span>
 
-<div class="viewcode-block" id="SerialLink.ikinem"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.ikinem">[docs]</a>    <span class="k">def</span> <span class="nf">ikinem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">q0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pweight</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">stiffness</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+<div class="viewcode-block" id="SerialLink.ikinem"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.ikinem">[docs]</a>    <span class="k">def</span> <span class="nf">ikinem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">q0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pweight</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">stiffness</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
                <span class="n">qlimits</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ilimit</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">nolm</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Numerical inverse kinematics with joint limits</span>
@@ -2606,7 +2606,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">qt</span><span class="p">,</span> <span class="n">success</span><span class="p">,</span> <span class="n">err</span></div>
 
-<div class="viewcode-block" id="SerialLink.ikunc"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.ikunc">[docs]</a>    <span class="k">def</span> <span class="nf">ikunc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">q0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ilimit</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.ikunc"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.ikunc">[docs]</a>    <span class="k">def</span> <span class="nf">ikunc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">q0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ilimit</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Inverse manipulator by optimization without joint limits</span>
 
@@ -2696,7 +2696,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">qt</span><span class="p">,</span> <span class="n">success</span><span class="p">,</span> <span class="n">err</span></div>
 
-<div class="viewcode-block" id="SerialLink.rne"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.rne">[docs]</a>    <span class="nd">@_check_rne</span>
+<div class="viewcode-block" id="SerialLink.rne"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.rne">[docs]</a>    <span class="nd">@_check_rne</span>
     <span class="k">def</span> <span class="nf">rne</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qdd</span><span class="p">,</span> <span class="n">qd</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">grav</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fext</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Inverse dynamics</span>
@@ -2770,7 +2770,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">tau</span></div>
 
-<div class="viewcode-block" id="SerialLink.delete_rne"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.delete_rne">[docs]</a>    <span class="k">def</span> <span class="nf">delete_rne</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.delete_rne"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.delete_rne">[docs]</a>    <span class="k">def</span> <span class="nf">delete_rne</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Frees the memory holding the robot object in c if the robot object</span>
 <span class="sd">        has been initialised in c.</span>
@@ -2781,7 +2781,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_rne_changed</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_rne_ob</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="SerialLink.paycap"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.SerialLink.SerialLink.paycap">[docs]</a>    <span class="k">def</span> <span class="nf">paycap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">tlim</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.paycap"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.paycap">[docs]</a>    <span class="k">def</span> <span class="nf">paycap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">tlim</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Static payload capacity of a robot</span>
 
@@ -2836,7 +2836,8 @@
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../roboticstoolbox.html">Classes and functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm_dh.html">Arm Type Robots - DH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm_ets.html">Arm Type Robots - ETS</a></li>
 </ul>
 
 <div class="relations">

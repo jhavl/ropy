@@ -49,7 +49,7 @@
 <span class="kn">import</span> <span class="nn">ropy</span> <span class="k">as</span> <span class="nn">rp</span>
 
 
-<div class="viewcode-block" id="Link"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.Revolute.Link">[docs]</a><span class="k">class</span> <span class="nc">Link</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Link"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.Revolute.Link">[docs]</a><span class="k">class</span> <span class="nc">Link</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A link superclass for all link types. A Link object holds all information</span>
 <span class="sd">    related to a robot joint and link such as kinematics parameters,</span>
@@ -346,7 +346,7 @@
     <span class="k">def</span> <span class="nf">G</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">G_new</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_G</span> <span class="o">=</span> <span class="n">G_new</span>
 
-<div class="viewcode-block" id="Link.dyn"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.Revolute.Link.dyn">[docs]</a>    <span class="k">def</span> <span class="nf">dyn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Link.dyn"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.Revolute.Link.dyn">[docs]</a>    <span class="k">def</span> <span class="nf">dyn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Show inertial properties of link</span>
 
@@ -382,7 +382,7 @@
 
         <span class="k">return</span> <span class="n">s</span></div>
 
-<div class="viewcode-block" id="Link.A"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.Revolute.Link.A">[docs]</a>    <span class="k">def</span> <span class="nf">A</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+<div class="viewcode-block" id="Link.A"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.Revolute.Link.A">[docs]</a>    <span class="k">def</span> <span class="nf">A</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Link transform matrix</span>
 
@@ -443,7 +443,7 @@
 
         <span class="k">return</span> <span class="n">SE3</span><span class="p">(</span><span class="n">T</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Link.islimit"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.Revolute.Link.islimit">[docs]</a>    <span class="k">def</span> <span class="nf">islimit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+<div class="viewcode-block" id="Link.islimit"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.Revolute.Link.islimit">[docs]</a>    <span class="k">def</span> <span class="nf">islimit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks if the joint is exceeding a joint limit</span>
 
@@ -457,7 +457,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="Link.isrevolute"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.Revolute.Link.isrevolute">[docs]</a>    <span class="k">def</span> <span class="nf">isrevolute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Link.isrevolute"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.Revolute.Link.isrevolute">[docs]</a>    <span class="k">def</span> <span class="nf">isrevolute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks if the joint is of revolute type</span>
 
@@ -471,7 +471,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="Link.isprismatic"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.Revolute.Link.isprismatic">[docs]</a>    <span class="k">def</span> <span class="nf">isprismatic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Link.isprismatic"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.Revolute.Link.isprismatic">[docs]</a>    <span class="k">def</span> <span class="nf">isprismatic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks if the joint is of prismatic type</span>
 
@@ -485,7 +485,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="Link.nofriction"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.Revolute.Link.nofriction">[docs]</a>    <span class="k">def</span> <span class="nf">nofriction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coulomb</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">viscous</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Link.nofriction"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.Revolute.Link.nofriction">[docs]</a>    <span class="k">def</span> <span class="nf">nofriction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coulomb</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">viscous</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        l2 = nofriction(coulomb, viscous) copies the link and returns a link</span>
 <span class="sd">        with the same parameters except, the Coulomb and/or viscous friction</span>
@@ -527,7 +527,7 @@
 
         <span class="k">return</span> <span class="n">link</span></div>
 
-<div class="viewcode-block" id="Link.friction"><a class="viewcode-back" href="../../../roboticstoolbox.html#ropy.robot.Revolute.Link.friction">[docs]</a>    <span class="k">def</span> <span class="nf">friction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qd</span><span class="p">):</span>
+<div class="viewcode-block" id="Link.friction"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.Revolute.Link.friction">[docs]</a>    <span class="k">def</span> <span class="nf">friction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qd</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        tau = friction(qd) Calculates the joint friction force/torque (n)</span>
 <span class="sd">        for joint velocity qd (n). The friction model includes:</span>
@@ -604,7 +604,8 @@
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../roboticstoolbox.html">Classes and functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm_dh.html">Arm Type Robots - DH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm_ets.html">Arm Type Robots - ETS</a></li>
 </ul>
 
 <div class="relations">
