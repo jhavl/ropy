@@ -56,6 +56,7 @@ kinematics</p></li>
 <li><p><strong>manufacturer</strong> (<em>str</em><em>, </em><em>optional</em>) – Manufacturer of the robot</p></li>
 <li><p><strong>base</strong> (<em>SE3</em><em>, </em><em>optional</em>) – Location of the base is the world frame</p></li>
 <li><p><strong>tool</strong> (<em>SE3</em><em>, </em><em>optional</em>) – Offset of the flange of the robot to the end-effector</p></li>
+<li><p><strong>gravity</strong> – The gravity vector</p></li>
 </ul>
 </dd>
 <dt class="field-even">References</dt>
@@ -410,9 +411,9 @@ J. Haviland and P. Corke</p></li>
 <dt id="ropy.robot.ET.ET.TRx">
 <em class="property">classmethod </em><code class="sig-name descname">TRx</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">eta</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ropy/robot/ET.html#ET.TRx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ropy.robot.ET.ET.TRx" title="Permalink to this definition">¶</a></dt>
 <dd><p>An elementary transform (ET). A pure rotation of eta about the x-axis.</p>
-<p>l = TRx(eta) will instantiate an ET object which represents a pure
+<p>L = TRx(eta) will instantiate an ET object which represents a pure
 rotation about the x-axis by amount eta.</p>
-<p>l = TRx() as above except this ET representation a variable
+<p>L = TRx() as above except this ET representation a variable
 rotation, i.e. a joint</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -434,9 +435,9 @@ rotation, i.e. a joint</p>
 <dt id="ropy.robot.ET.ET.TRy">
 <em class="property">classmethod </em><code class="sig-name descname">TRy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">eta</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ropy/robot/ET.html#ET.TRy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ropy.robot.ET.ET.TRy" title="Permalink to this definition">¶</a></dt>
 <dd><p>An elementary transform (ET). A pure rotation of eta about the y-axis.</p>
-<p>l = TRy(eta) will instantiate an ET object which represents a pure
+<p>L = TRy(eta) will instantiate an ET object which represents a pure
 rotation about the y-axis by amount eta.</p>
-<p>l = TRy() as above except this ET representation a variable
+<p>L = TRy() as above except this ET representation a variable
 rotation, i.e. a joint</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -458,9 +459,9 @@ rotation, i.e. a joint</p>
 <dt id="ropy.robot.ET.ET.TRz">
 <em class="property">classmethod </em><code class="sig-name descname">TRz</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">eta</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ropy/robot/ET.html#ET.TRz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ropy.robot.ET.ET.TRz" title="Permalink to this definition">¶</a></dt>
 <dd><p>An elementary transform (ET). A pure rotation of eta about the z-axis.</p>
-<p>l = TRz(eta) will instantiate an ET object which represents a pure
+<p>L = TRz(eta) will instantiate an ET object which represents a pure
 rotation about the z-axis by amount eta.</p>
-<p>l = TRz() as above except this ET representation a variable
+<p>L = TRz() as above except this ET representation a variable
 rotation, i.e. a joint</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -480,9 +481,9 @@ rotation, i.e. a joint</p>
 <em class="property">classmethod </em><code class="sig-name descname">Ttx</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">eta</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ropy/robot/ET.html#ET.Ttx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ropy.robot.ET.ET.Ttx" title="Permalink to this definition">¶</a></dt>
 <dd><p>An elementary transform (ET). A pure translation of eta along the
 x-axis</p>
-<p>l = Ttx(eta) will instantiate an ET object which represents a pure
+<p>L = Ttx(eta) will instantiate an ET object which represents a pure
 translation along the x-axis by amount eta.</p>
-<p>l = Ttx() as above except this ET representation a variable
+<p>L = Ttx() as above except this ET representation a variable
 translation, i.e. a joint</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -502,9 +503,9 @@ translation, i.e. a joint</p>
 <em class="property">classmethod </em><code class="sig-name descname">Tty</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">eta</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ropy/robot/ET.html#ET.Tty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ropy.robot.ET.ET.Tty" title="Permalink to this definition">¶</a></dt>
 <dd><p>An elementary transform (ET). A pure translation of eta along the
 x-axis</p>
-<p>l = Tty(eta) will instantiate an ET object which represents a pure
+<p>L = Tty(eta) will instantiate an ET object which represents a pure
 translation along the y-axis by amount eta.</p>
-<p>l = Tty() as above except this ET representation a variable
+<p>L = Tty() as above except this ET representation a variable
 translation, i.e. a joint</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -524,9 +525,9 @@ translation, i.e. a joint</p>
 <em class="property">classmethod </em><code class="sig-name descname">Ttz</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">eta</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ropy/robot/ET.html#ET.Ttz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ropy.robot.ET.ET.Ttz" title="Permalink to this definition">¶</a></dt>
 <dd><p>An elementary transform (ET). A pure translation of eta along the
 z-axis</p>
-<p>l = Ttz(eta) will instantiate an ET object which represents a pure
+<p>L = Ttz(eta) will instantiate an ET object which represents a pure
 translation along the z-axis by amount eta.</p>
-<p>l = Ttz() as above except this ET representation a variable
+<p>L = Ttz() as above except this ET representation a variable
 translation, i.e. a joint</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
