@@ -132,6 +132,47 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_rne_ob</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_rne_changed</span> <span class="o">=</span> <span class="kc">False</span>
 
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Pretty prints the DH Model of the robot. Will output angles in degrees</span>
+
+<span class="sd">        :return: Pretty print of the robot model</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">axes</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">L</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">sigma</span><span class="p">:</span>
+                <span class="n">axes</span> <span class="o">+=</span> <span class="s1">&#39;R&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">axes</span> <span class="o">+=</span> <span class="s1">&#39;P&#39;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdh</span><span class="p">:</span>
+            <span class="n">dh</span> <span class="o">=</span> <span class="s1">&#39;std DH&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dh</span> <span class="o">=</span> <span class="s1">&#39;mod DH&#39;</span>
+
+        <span class="n">rpy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">rpy</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">rpy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">rpy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">model</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="si">%s</span><span class="s1"> (</span><span class="si">%s</span><span class="s1">): </span><span class="si">%d</span><span class="s1"> axis, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span>\
+            <span class="s1">&#39;Parameters:</span><span class="se">\n</span><span class="s1">&#39;</span>\
+            <span class="s1">&#39;</span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span>\
+            <span class="s1">&#39;tool:  t = (</span><span class="si">%g</span><span class="s1">, </span><span class="si">%g</span><span class="s1">, </span><span class="si">%g</span><span class="s1">),  RPY/xyz = (</span><span class="si">%g</span><span class="s1">, </span><span class="si">%g</span><span class="s1">, </span><span class="si">%g</span><span class="s1">) deg&#39;</span> <span class="o">%</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">manuf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">dh</span><span class="p">,</span>
+                <span class="n">L</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">rpy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rpy</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">rpy</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">model</span>
+
     <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">L</span><span class="p">):</span>
         <span class="n">nlinks</span> <span class="o">=</span> <span class="p">[]</span>
 
