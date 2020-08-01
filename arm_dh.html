@@ -616,11 +616,11 @@ row of q.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>W</strong> – A wrench vector applied at the end effector,
+<li><p><strong>W</strong> (<em>float ndarray</em><em>(</em><em>6</em><em>)</em>) – A wrench vector applied at the end effector,
 W = [Fx Fy Fz Mx My Mz]</p></li>
-<li><p><strong>q</strong> (<em>float ndarray</em><em>(</em><em>1</em><em>,</em><em>n</em><em>)</em>) – The joint angles/configuration of the robot (Optional,
+<li><p><strong>q</strong> (<em>float ndarray</em><em>(</em><em>n</em><em>)</em>) – The joint angles/configuration of the robot (Optional,
 if not supplied will use the stored q values).</p></li>
-<li><p><strong>J</strong> (<em>float ndarray</em><em>(</em><em>1</em><em>,</em><em>n</em><em>)</em>) – The manipulator Jacobian (Optional, if not supplied will
+<li><p><strong>J</strong> (<em>float ndarray</em><em>(</em><em>6</em><em>,</em><em>n</em><em>)</em>) – The manipulator Jacobian (Optional, if not supplied will
 use the q value).</p></li>
 <li><p><strong>frame</strong> (<em>int</em>) – The frame in which to torques are expressed in when J
 is not supplied. 0 means base frame of the robot, 1 means end-
@@ -631,13 +631,13 @@ effector frame</p></li>
 <dd class="field-even"><p>The joint forces/torques due to w</p>
 </dd>
 <dt class="field-odd">Rtype tau</dt>
-<dd class="field-odd"><p>float ndarray(1,n)</p>
+<dd class="field-odd"><p>float ndarray(n)</p>
 </dd>
 <dt class="field-even">Notes</dt>
 <dd class="field-even"><ul class="simple">
 <li><p>Wrench vector and Jacobian must be from the same reference
 frame.</p></li>
-<li><p>Tool transforms are taken into consideration when F = ‘e’.</p></li>
+<li><p>Tool transforms are taken into consideration when frame=1.</p></li>
 <li><p>Must have a constant wrench - no trajectory support for this
 yet.</p></li>
 </ul>
@@ -1357,22 +1357,46 @@ has been initialised in c.</p>
 
 <dl class="py method">
 <dt id="ropy.robot.SerialLink.SerialLink.paycap">
-<code class="sig-name descname">paycap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">w</span></em>, <em class="sig-param"><span class="n">f</span></em>, <em class="sig-param"><span class="n">tlim</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ropy/robot/SerialLink.html#SerialLink.paycap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ropy.robot.SerialLink.SerialLink.paycap" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">paycap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">w</span></em>, <em class="sig-param"><span class="n">tauR</span></em>, <em class="sig-param"><span class="n">frame</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">q</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ropy/robot/SerialLink.html#SerialLink.paycap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ropy.robot.SerialLink.SerialLink.paycap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Static payload capacity of a robot</p>
-<p>wmax, J = paycap(q, w, f, tlim) returns the maximum permissible
-payload wrench WMAX (1x6) applied at the end-effector, and the index
-of the joint J which hits its force/torque limit at that wrench. q (n)
-is the manipulator pose, w the payload wrench (6), f the wrench
-reference frame and tlim (nx2) is a matrix of joint forces/torques
-(first row is maximum, second row minimum).</p>
+<p>wmax, joint = paycap(q, w, f, tauR) returns the maximum permissible
+payload wrench wmax (6) applied at the end-effector, and the index
+of the joint (zero indexed) which hits its force/torque limit at that
+wrench. q (n) is the manipulator pose, w the payload wrench (6), f the
+wrench reference frame and tauR (nx2) is a matrix of joint
+forces/torques (first col is maximum, second col minimum).</p>
 <p>Trajectory operation:
 In the case q is nxm then wmax is Mx6 and J is Mx1 where the rows are
 the results at the pose given by corresponding row of q.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Notes</dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>w</strong> (<em>float ndarray</em><em>(</em><em>n</em><em>)</em>) – The payload wrench</p></li>
+<li><p><strong>tauR</strong> (<em>float ndarray</em><em>(</em><em>n</em><em>,</em><em>2</em><em>)</em>) – Joint torque matrix minimum and maximums</p></li>
+<li><p><strong>frame</strong> (<em>int</em>) – The frame in which to torques are expressed in when J
+is not supplied. 0 means base frame of the robot, 1 means end-
+effector frame</p></li>
+<li><p><strong>q</strong> (<em>float ndarray</em><em>(</em><em>n</em><em>)</em>) – The joint angles/configuration of the robot (Optional,
+if not supplied will use the stored q values).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Retrun wmax</dt>
+<dd class="field-even"><p>The maximum permissible payload wrench</p>
+</dd>
+<dt class="field-odd">Rtype wmax</dt>
+<dd class="field-odd"><p>float ndarray(6)</p>
+</dd>
+<dt class="field-even">Retrun joint</dt>
+<dd class="field-even"><p>The joint index (zero indexed) which hits its
+force/torque limit</p>
+</dd>
+<dt class="field-odd">Rtype joint</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><ul class="simple">
 <li><p>Wrench vector and Jacobian must be from the same reference frame</p></li>
-<li><p>Tool transforms are taken into consideration for F = ‘e’.</p></li>
+<li><p>Tool transforms are taken into consideration for frame=1.</p></li>
 </ul>
 </dd>
 </dl>

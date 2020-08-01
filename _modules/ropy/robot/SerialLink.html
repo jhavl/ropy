@@ -157,6 +157,9 @@
 
         <span class="n">rpy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">rpy</span>
 
+        <span class="c1"># TODO Update this on next spatialmaths release</span>
+        <span class="c1"># rpy = self.tool.rpy()</span>
+
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">rpy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">rpy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
@@ -1010,25 +1013,25 @@
 
 <span class="sd">        :param W: A wrench vector applied at the end effector,</span>
 <span class="sd">            W = [Fx Fy Fz Mx My Mz]</span>
-<span class="sd">        :type q: float ndarray(1,n)</span>
+<span class="sd">        :type W: float ndarray(6)</span>
 <span class="sd">        :param q: The joint angles/configuration of the robot (Optional,</span>
 <span class="sd">            if not supplied will use the stored q values).</span>
-<span class="sd">        :type q: float ndarray(1,n)</span>
+<span class="sd">        :type q: float ndarray(n)</span>
 <span class="sd">        :param J: The manipulator Jacobian (Optional, if not supplied will</span>
 <span class="sd">            use the q value).</span>
-<span class="sd">        :type J: float ndarray(1,n)</span>
+<span class="sd">        :type J: float ndarray(6,n)</span>
 <span class="sd">        :param frame: The frame in which to torques are expressed in when J</span>
 <span class="sd">            is not supplied. 0 means base frame of the robot, 1 means end-</span>
 <span class="sd">            effector frame</span>
 <span class="sd">        :type frame: int</span>
 
 <span class="sd">        :return tau: The joint forces/torques due to w</span>
-<span class="sd">        :rtype tau: float ndarray(1,n)</span>
+<span class="sd">        :rtype tau: float ndarray(n)</span>
 
 <span class="sd">        :notes:</span>
 <span class="sd">            - Wrench vector and Jacobian must be from the same reference</span>
 <span class="sd">              frame.</span>
-<span class="sd">            - Tool transforms are taken into consideration when F = &#39;e&#39;.</span>
+<span class="sd">            - Tool transforms are taken into consideration when frame=1.</span>
 <span class="sd">            - Must have a constant wrench - no trajectory support for this</span>
 <span class="sd">              yet.</span>
 
@@ -2822,27 +2825,95 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_rne_changed</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_rne_ob</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="SerialLink.paycap"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.paycap">[docs]</a>    <span class="k">def</span> <span class="nf">paycap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">tlim</span><span class="p">):</span>
+<div class="viewcode-block" id="SerialLink.paycap"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.paycap">[docs]</a>    <span class="k">def</span> <span class="nf">paycap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">tauR</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Static payload capacity of a robot</span>
 
-<span class="sd">        wmax, J = paycap(q, w, f, tlim) returns the maximum permissible</span>
-<span class="sd">        payload wrench WMAX (1x6) applied at the end-effector, and the index</span>
-<span class="sd">        of the joint J which hits its force/torque limit at that wrench. q (n)</span>
-<span class="sd">        is the manipulator pose, w the payload wrench (6), f the wrench</span>
-<span class="sd">        reference frame and tlim (nx2) is a matrix of joint forces/torques</span>
-<span class="sd">        (first row is maximum, second row minimum).</span>
+<span class="sd">        wmax, joint = paycap(q, w, f, tauR) returns the maximum permissible</span>
+<span class="sd">        payload wrench wmax (6) applied at the end-effector, and the index</span>
+<span class="sd">        of the joint (zero indexed) which hits its force/torque limit at that</span>
+<span class="sd">        wrench. q (n) is the manipulator pose, w the payload wrench (6), f the</span>
+<span class="sd">        wrench reference frame and tauR (nx2) is a matrix of joint</span>
+<span class="sd">        forces/torques (first col is maximum, second col minimum).</span>
 
 <span class="sd">        Trajectory operation:</span>
 <span class="sd">        In the case q is nxm then wmax is Mx6 and J is Mx1 where the rows are</span>
 <span class="sd">        the results at the pose given by corresponding row of q.</span>
 
+<span class="sd">        :param w: The payload wrench</span>
+<span class="sd">        :type w: float ndarray(n)</span>
+<span class="sd">        :param tauR: Joint torque matrix minimum and maximums</span>
+<span class="sd">        :type tauR: float ndarray(n,2)</span>
+<span class="sd">        :param frame: The frame in which to torques are expressed in when J</span>
+<span class="sd">            is not supplied. 0 means base frame of the robot, 1 means end-</span>
+<span class="sd">            effector frame</span>
+<span class="sd">        :type frame: int</span>
+<span class="sd">        :param q: The joint angles/configuration of the robot (Optional,</span>
+<span class="sd">            if not supplied will use the stored q values).</span>
+<span class="sd">        :type q: float ndarray(n)</span>
+
+<span class="sd">        :retrun wmax: The maximum permissible payload wrench</span>
+<span class="sd">        :rtype wmax: float ndarray(6)</span>
+<span class="sd">        :retrun joint: The joint index (zero indexed) which hits its</span>
+<span class="sd">            force/torque limit</span>
+<span class="sd">        :rtype joint: int</span>
+
 <span class="sd">        :notes:</span>
 <span class="sd">            - Wrench vector and Jacobian must be from the same reference frame</span>
-<span class="sd">            - Tool transforms are taken into consideration for F = &#39;e&#39;.</span>
+<span class="sd">            - Tool transforms are taken into consideration for frame=1.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">pass</span></div></div>
+        <span class="n">trajn</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">q</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">getvector</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="s1">&#39;col&#39;</span><span class="p">)</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">getvector</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;col&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">trajn</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">verifymatrix</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">trajn</span><span class="p">))</span>
+            <span class="n">verifymatrix</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">trajn</span><span class="p">))</span>
+
+        <span class="n">verifymatrix</span><span class="p">(</span><span class="n">tauR</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+        <span class="n">wmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">6</span><span class="p">,</span> <span class="n">trajn</span><span class="p">))</span>
+        <span class="n">joint</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">trajn</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">trajn</span><span class="p">):</span>
+            <span class="n">tauB</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gravload</span><span class="p">(</span><span class="n">q</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span>
+
+            <span class="c1"># tauP = self.rne(</span>
+            <span class="c1">#     np.zeros(self.n), np.zeros(self.n),</span>
+            <span class="c1">#     q, grav=[0, 0, 0], fext=w/np.linalg.norm(w))</span>
+
+            <span class="n">tauP</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pay</span><span class="p">(</span>
+                <span class="n">w</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">w</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]),</span> <span class="n">q</span><span class="o">=</span><span class="n">q</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span>
+
+            <span class="n">M</span> <span class="o">=</span> <span class="n">tauP</span> <span class="o">&gt;</span> <span class="mi">0</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">tauP</span> <span class="o">&lt;=</span> <span class="mi">0</span>
+
+            <span class="n">TAUm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+            <span class="n">TAUM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">):</span>
+                <span class="n">TAUM</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">tauR</span><span class="p">[</span><span class="n">c</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+                <span class="n">TAUm</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">tauR</span><span class="p">[</span><span class="n">c</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+
+            <span class="n">WM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+            <span class="n">WM</span><span class="p">[</span><span class="n">M</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">TAUM</span><span class="p">[</span><span class="n">M</span><span class="p">]</span> <span class="o">-</span> <span class="n">tauB</span><span class="p">[</span><span class="n">M</span><span class="p">])</span> <span class="o">/</span> <span class="n">tauP</span><span class="p">[</span><span class="n">M</span><span class="p">]</span>
+            <span class="n">WM</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">TAUm</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">-</span> <span class="n">tauB</span><span class="p">[</span><span class="n">m</span><span class="p">])</span> <span class="o">/</span> <span class="n">tauP</span><span class="p">[</span><span class="n">m</span><span class="p">]</span>
+
+            <span class="n">WM</span><span class="p">[</span><span class="n">WM</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">NINF</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">Inf</span>
+
+            <span class="n">wmax</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">WM</span>
+            <span class="n">joint</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">WM</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">trajn</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">wmax</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">joint</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">wmax</span><span class="p">,</span> <span class="n">joint</span></div></div>
 </pre></div>
 
           </div>
