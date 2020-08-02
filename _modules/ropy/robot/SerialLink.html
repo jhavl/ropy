@@ -627,10 +627,12 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="n">q</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">q</span> <span class="o">=</span> <span class="n">getvector</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span></div>
+        <span class="k">pass</span></div>
+
+        <span class="c1"># if q is None:</span>
+        <span class="c1">#     q = np.copy(self.q)</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     q = getvector(q, self.n)</span>
 
         <span class="c1"># TODO Implement this</span>
 
@@ -2010,19 +2012,24 @@
 
             <span class="c1"># default configuration</span>
             <span class="n">n1</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>    <span class="c1"># L</span>
-            <span class="n">n2</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>    <span class="c1"># U</span>
+            <span class="c1"># n2 = -1    # U</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">left</span><span class="p">:</span>
                 <span class="n">n1</span> <span class="o">=</span> <span class="mi">1</span>
 
-            <span class="k">if</span> <span class="n">elbow_up</span> <span class="ow">and</span> <span class="n">n1</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">n2</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="c1"># if elbow_up and n1 == 1:</span>
+            <span class="c1">#     n2 = 1</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">elbow_up</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">n1</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="n">n2</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">n2</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">n1</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">n2</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">n2</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
 
             <span class="c1"># Solve for theta[0]</span>
             <span class="c1"># based on the configuration parameter n1</span>
