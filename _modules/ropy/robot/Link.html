@@ -346,6 +346,28 @@
     <span class="k">def</span> <span class="nf">G</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">G_new</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_G</span> <span class="o">=</span> <span class="n">G_new</span>
 
+    <span class="k">def</span> <span class="nf">_copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Copy the Link</span>
+        <span class="n">link</span> <span class="o">=</span> <span class="n">Link</span><span class="p">(</span>
+            <span class="n">d</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">,</span>
+            <span class="n">alpha</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span>
+            <span class="n">theta</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
+            <span class="n">a</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span>
+            <span class="n">sigma</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="p">,</span>
+            <span class="n">mdh</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mdh</span><span class="p">,</span>
+            <span class="n">offset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span>
+            <span class="n">qlim</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">qlim</span><span class="p">,</span>
+            <span class="n">flip</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">flip</span><span class="p">,</span>
+            <span class="n">m</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
+            <span class="n">r</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">,</span>
+            <span class="n">I</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">I</span><span class="p">,</span>
+            <span class="n">Jm</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Jm</span><span class="p">,</span>
+            <span class="n">B</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="p">,</span>
+            <span class="n">Tc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Tc</span><span class="p">,</span>
+            <span class="n">G</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">link</span>
+
 <div class="viewcode-block" id="Link.dyn"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.Revolute.Link.dyn">[docs]</a>    <span class="k">def</span> <span class="nf">dyn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Show inertial properties of link</span>
@@ -501,23 +523,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># Copy the Link</span>
-        <span class="n">link</span> <span class="o">=</span> <span class="n">Link</span><span class="p">(</span>
-            <span class="n">d</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">,</span>
-            <span class="n">alpha</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span>
-            <span class="n">theta</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
-            <span class="n">a</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span>
-            <span class="n">sigma</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="p">,</span>
-            <span class="n">mdh</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mdh</span><span class="p">,</span>
-            <span class="n">offset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span>
-            <span class="n">qlim</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">qlim</span><span class="p">,</span>
-            <span class="n">flip</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">flip</span><span class="p">,</span>
-            <span class="n">m</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
-            <span class="n">r</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">,</span>
-            <span class="n">I</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">I</span><span class="p">,</span>
-            <span class="n">Jm</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Jm</span><span class="p">,</span>
-            <span class="n">B</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="p">,</span>
-            <span class="n">Tc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Tc</span><span class="p">,</span>
-            <span class="n">G</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">)</span>
+        <span class="n">link</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_copy</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">viscous</span><span class="p">:</span>
             <span class="n">link</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="mf">0.0</span>

@@ -592,13 +592,10 @@ a robot with the same parameters except the Coulomb friction parameter
 is set to zero</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>coulomb</strong> (<em>bool</em>) – if True, will set the coulomb friction to 0</p></li>
-<li><p><strong>viscous</strong> (<em>bool</em>) – if True, will set the viscous friction to 0</p></li>
-</ul>
+<dd class="field-odd"><p><strong>coulomb</strong> (<em>bool</em>) – if True, will set the coulomb friction to 0</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A copy of the robot with modified friction</p>
+<dd class="field-even"><p>A copy of the robot with dynamic parameters perturbed</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="#ropy.robot.SerialLink.SerialLink" title="ropy.robot.SerialLink.SerialLink">SerialLink</a></p>
@@ -1454,7 +1451,8 @@ O Khatib, IEEE Journal on Robotics and Automation, 1987.</p></li>
 <dl class="py method">
 <dt id="ropy.robot.SerialLink.SerialLink.maniplty">
 <code class="sig-name descname">maniplty</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">q</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'yoshikawa'</span></em>, <em class="sig-param"><span class="n">axes</span><span class="o">=</span><span class="default_value">[1, 1, 1, 1, 1, 1]</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ropy/robot/SerialLink.html#SerialLink.maniplty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ropy.robot.SerialLink.SerialLink.maniplty" title="Permalink to this definition">¶</a></dt>
-<dd><p>m = maniplty(q) is the yoshikawa manipulability index (scalar) for the
+<dd><p>Manipulability measure</p>
+<p>m = maniplty(q) is the yoshikawa manipulability index (scalar) for the
 robot at the joint configuration q (n) where n is the number of robot
 joints.  It indicates dexterity, that is, how isotropic the robot’s
 motion is with respect to the 6 degrees of Cartesian motion. The
@@ -1510,6 +1508,31 @@ Journal of Dynamic Systems, Measurement, and Control,
 vol. 105, p. 131, 1983.</p></li>
 <li><p>Robotics, Vision &amp; Control, P. Corke, Springer 2011.</p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ropy.robot.SerialLink.SerialLink.perterb">
+<code class="sig-name descname">perterb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span><span class="o">=</span><span class="default_value">0.1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ropy/robot/SerialLink.html#SerialLink.perterb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ropy.robot.SerialLink.SerialLink.perterb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perturb robot parameters</p>
+<p>rp = perturb(p) is a new robot object in which the dynamic parameters
+(link mass and inertia) have been perturbed. The perturbation is
+multiplicative so that values are multiplied by random numbers in the
+interval (1-p) to (1+p). The name string of the perturbed robot is
+prefixed by ‘P/’.</p>
+<p>Useful for investigating the robustness of various model-based control
+schemes. For example to vary parameters in the range +/- 10 percent
+is: r2 = puma.perturb(0.1)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>p</strong> (<em>float</em>) – The percent (+/-) to be perturbed. Default 10%</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A copy of the robot with dynamic parameters perturbed</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ropy.robot.SerialLink.SerialLink" title="ropy.robot.SerialLink.SerialLink">SerialLink</a></p>
 </dd>
 </dl>
 </dd></dl>

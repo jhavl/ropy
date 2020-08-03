@@ -992,10 +992,8 @@
 
 <span class="sd">        :param coulomb: if True, will set the coulomb friction to 0</span>
 <span class="sd">        :type coulomb: bool</span>
-<span class="sd">        :param viscous: if True, will set the viscous friction to 0</span>
-<span class="sd">        :type viscous: bool</span>
 
-<span class="sd">        :return: A copy of the robot with modified friction</span>
+<span class="sd">        :return: A copy of the robot with dynamic parameters perturbed</span>
 <span class="sd">        :rtype: SerialLink</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -3065,6 +3063,8 @@
 
 <div class="viewcode-block" id="SerialLink.maniplty"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.maniplty">[docs]</a>    <span class="k">def</span> <span class="nf">maniplty</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;yoshikawa&#39;</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]):</span>
         <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Manipulability measure</span>
+
 <span class="sd">        m = maniplty(q) is the yoshikawa manipulability index (scalar) for the</span>
 <span class="sd">        robot at the joint configuration q (n) where n is the number of robot</span>
 <span class="sd">        joints.  It indicates dexterity, that is, how isotropic the robot&#39;s</span>
@@ -3122,6 +3122,7 @@
 <span class="sd">              Journal of Dynamic Systems, Measurement, and Control,</span>
 <span class="sd">              vol. 105, p. 131, 1983.</span>
 <span class="sd">            - Robotics, Vision &amp; Control, P. Corke, Springer 2011.</span>
+
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="k">def</span> <span class="nf">yoshi</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">axes</span><span class="p">):</span>
@@ -3188,7 +3189,61 @@
 
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s1">&#39;Invalid method chosen. Must be </span><span class="se">\&#39;</span><span class="s1">yoshikawa</span><span class="se">\&#39;</span><span class="s1"> or </span><span class="se">\&#39;</span><span class="s1">asada</span><span class="se">\&#39;</span><span class="s1">.&#39;</span><span class="p">)</span></div></div>
+                <span class="s1">&#39;Invalid method chosen. Must be </span><span class="se">\&#39;</span><span class="s1">yoshikawa</span><span class="se">\&#39;</span><span class="s1"> or </span><span class="se">\&#39;</span><span class="s1">asada</span><span class="se">\&#39;</span><span class="s1">.&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SerialLink.perterb"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.perterb">[docs]</a>    <span class="k">def</span> <span class="nf">perterb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Perturb robot parameters</span>
+
+<span class="sd">        rp = perturb(p) is a new robot object in which the dynamic parameters</span>
+<span class="sd">        (link mass and inertia) have been perturbed. The perturbation is</span>
+<span class="sd">        multiplicative so that values are multiplied by random numbers in the</span>
+<span class="sd">        interval (1-p) to (1+p). The name string of the perturbed robot is</span>
+<span class="sd">        prefixed by &#39;P/&#39;.</span>
+
+<span class="sd">        Useful for investigating the robustness of various model-based control</span>
+<span class="sd">        schemes. For example to vary parameters in the range +/- 10 percent</span>
+<span class="sd">        is: r2 = puma.perturb(0.1)</span>
+
+<span class="sd">        :param p: The percent (+/-) to be perturbed. Default 10%</span>
+<span class="sd">        :type p: float</span>
+
+<span class="sd">        :return: A copy of the robot with dynamic parameters perturbed</span>
+<span class="sd">        :rtype: SerialLink</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">r2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_copy</span><span class="p">()</span>
+        <span class="n">r2</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;P/&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">p</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">r2</span><span class="o">.</span><span class="n">links</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="n">r2</span><span class="o">.</span><span class="n">links</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">m</span> <span class="o">*</span> <span class="n">s</span>
+
+            <span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">p</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">r2</span><span class="o">.</span><span class="n">links</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">I</span> <span class="o">=</span> <span class="n">r2</span><span class="o">.</span><span class="n">links</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">I</span> <span class="o">*</span> <span class="n">s</span>
+
+        <span class="k">return</span> <span class="n">r2</span></div>
+
+    <span class="k">def</span> <span class="nf">_copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">L</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">_copy</span><span class="p">())</span>
+
+        <span class="n">r2</span> <span class="o">=</span> <span class="n">SerialLink</span><span class="p">(</span>
+            <span class="n">L</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">manufacturer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">manuf</span><span class="p">,</span>
+            <span class="n">base</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="p">,</span>
+            <span class="n">tool</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="p">,</span>
+            <span class="n">gravity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gravity</span><span class="p">)</span>
+
+        <span class="n">r2</span><span class="o">.</span><span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span>
+        <span class="n">r2</span><span class="o">.</span><span class="n">qd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qd</span>
+        <span class="n">r2</span><span class="o">.</span><span class="n">qdd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qdd</span>
+
+        <span class="k">return</span> <span class="n">r2</span></div>
 </pre></div>
 
           </div>
