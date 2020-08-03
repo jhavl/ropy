@@ -1484,14 +1484,11 @@ measure returns the Cartesian inertia matrix CI.</p>
 <li><p><strong>q</strong> (<em>float ndarray</em><em>(</em><em>n</em><em>)</em>) – The joint angles/configuration of the robot (Optional,
 if not supplied will use the stored q values).</p></li>
 <li><p><strong>method</strong> (<em>string</em>) – Which method to use, ‘yoshikawa’ (default) or ‘asada’</p></li>
-<li><p><strong>axes</strong> – The degrees-of-freedom to be included for manipulability</p></li>
+<li><p><strong>axes</strong> (<em>int list</em>) – The degrees-of-freedom to be included for manipulability</p></li>
 </ul>
 </dd>
-</dl>
-<p>“type axes: int list</p>
-<dl class="field-list simple">
-<dt class="field-odd">Notes</dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><ul class="simple">
 <li><p>The ‘all’ option includes rotational and translational
 dexterity, but this involves adding different units. It can be
 more useful to look at the translational and rotational
@@ -1500,8 +1497,8 @@ manipulability separately.</p></li>
 using the ‘all’ option</p></li>
 </ul>
 </dd>
-<dt class="field-even">References</dt>
-<dd class="field-even"><ul class="simple">
+<dt class="field-odd">References</dt>
+<dd class="field-odd"><ul class="simple">
 <li><p>Analysis and control of robot manipulators with redundancy,
 T. Yoshikawa,
 Robotics Research: The First International Symposium
