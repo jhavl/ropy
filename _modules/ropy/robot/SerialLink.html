@@ -42,11 +42,12 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
 <span class="kn">from</span> <span class="nn">ropy.robot.Link</span> <span class="kn">import</span> <span class="n">Link</span>
+<span class="kn">from</span> <span class="nn">ropy.tools.null</span> <span class="kn">import</span> <span class="n">null</span>
 <span class="kn">from</span> <span class="nn">spatialmath.base.argcheck</span> <span class="kn">import</span> \
     <span class="n">getvector</span><span class="p">,</span> <span class="n">ismatrix</span><span class="p">,</span> <span class="n">isscalar</span><span class="p">,</span> <span class="n">verifymatrix</span>
 <span class="kn">from</span> <span class="nn">spatialmath.base.transforms3d</span> <span class="kn">import</span> <span class="n">tr2delta</span><span class="p">,</span> <span class="n">tr2eul</span>
 <span class="kn">from</span> <span class="nn">spatialmath</span> <span class="kn">import</span> <span class="n">SE3</span>
-<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span><span class="p">,</span> <span class="n">Bounds</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span><span class="p">,</span> <span class="n">Bounds</span><span class="p">,</span> <span class="n">LinearConstraint</span>
 <span class="kn">from</span> <span class="nn">frne</span> <span class="kn">import</span> <span class="n">init</span><span class="p">,</span> <span class="n">frne</span><span class="p">,</span> <span class="n">delete</span>
 
 
@@ -209,6 +210,26 @@
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">):</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">mdh</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdh</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Robot has mixed D&amp;H links conventions.&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">L</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">_copy</span><span class="p">())</span>
+
+        <span class="n">r2</span> <span class="o">=</span> <span class="n">SerialLink</span><span class="p">(</span>
+            <span class="n">L</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">manufacturer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">manuf</span><span class="p">,</span>
+            <span class="n">base</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="p">,</span>
+            <span class="n">tool</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="p">,</span>
+            <span class="n">gravity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gravity</span><span class="p">)</span>
+
+        <span class="n">r2</span><span class="o">.</span><span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span>
+        <span class="n">r2</span><span class="o">.</span><span class="n">qd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qd</span>
+        <span class="n">r2</span><span class="o">.</span><span class="n">qdd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qdd</span>
+
+        <span class="k">return</span> <span class="n">r2</span>
 
     <span class="k">def</span> <span class="nf">_init_rne</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Compress link data into a 1D array</span>
@@ -3094,7 +3115,6 @@
 <span class="sd">        [m, CI] = maniplty(q, OPTIONS) as above, but for the case of the Asada</span>
 <span class="sd">        measure returns the Cartesian inertia matrix CI.</span>
 
-
 <span class="sd">        :param q: The joint angles/configuration of the robot (Optional,</span>
 <span class="sd">            if not supplied will use the stored q values).</span>
 <span class="sd">        :type q: float ndarray(n)</span>
@@ -3225,25 +3245,86 @@
 
         <span class="k">return</span> <span class="n">r2</span></div>
 
-    <span class="k">def</span> <span class="nf">_copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">L</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="viewcode-block" id="SerialLink.qmincon"><a class="viewcode-back" href="../../../arm_dh.html#ropy.robot.SerialLink.SerialLink.qmincon">[docs]</a>    <span class="k">def</span> <span class="nf">qmincon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        qs, success, err = qmincon(q) exploits null space motion and returns</span>
+<span class="sd">        a set of joint angles qs (n) that result in the same end-effector</span>
+<span class="sd">        pose but are away from the joint coordinate limits. n is the number</span>
+<span class="sd">        of robot joints. Success retruns True for successful optimisation.</span>
+<span class="sd">        err which is the scalar final value of the objective function.</span>
 
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">):</span>
-            <span class="n">L</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">_copy</span><span class="p">())</span>
+<span class="sd">        Trajectory operation:</span>
+<span class="sd">        In all cases if q is nxm it is taken as a pose sequence and qmincon()</span>
+<span class="sd">        returns the adjusted joint coordinates (nxm) corresponding to each of</span>
+<span class="sd">        the poses in the sequence.</span>
 
-        <span class="n">r2</span> <span class="o">=</span> <span class="n">SerialLink</span><span class="p">(</span>
-            <span class="n">L</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="n">manufacturer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">manuf</span><span class="p">,</span>
-            <span class="n">base</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="p">,</span>
-            <span class="n">tool</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="p">,</span>
-            <span class="n">gravity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gravity</span><span class="p">)</span>
+<span class="sd">        err and success are also m and indicate the results of optimisation</span>
+<span class="sd">        for the corresponding trajectory step.</span>
 
-        <span class="n">r2</span><span class="o">.</span><span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span>
-        <span class="n">r2</span><span class="o">.</span><span class="n">qd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qd</span>
-        <span class="n">r2</span><span class="o">.</span><span class="n">qdd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qdd</span>
+<span class="sd">        :param q: The joint angles/configuration of the robot (Optional,</span>
+<span class="sd">            if not supplied will use the stored q values).</span>
 
-        <span class="k">return</span> <span class="n">r2</span></div>
+<span class="sd">        :retrun qs: The calculated joint values</span>
+<span class="sd">        :rtype qs: float ndarray(n)</span>
+<span class="sd">        :retrun success: Optimisation solved (True) or failed (False)</span>
+<span class="sd">        :rtype success: bool</span>
+<span class="sd">        :retrun err: Final value of the objective function</span>
+<span class="sd">        :rtype err: float</span>
+
+<span class="sd">        :notes:</span>
+<span class="sd">            - Robot must be redundant.</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">def</span> <span class="nf">sumsqr</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">A</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ub</span><span class="p">,</span> <span class="n">lb</span><span class="p">,</span> <span class="n">qm</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">sumsqr</span><span class="p">(</span>
+                <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">N</span> <span class="o">@</span> <span class="n">x</span> <span class="o">+</span> <span class="n">qm</span><span class="p">)</span> <span class="o">-</span> <span class="n">ub</span> <span class="o">-</span> <span class="n">lb</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">ub</span> <span class="o">-</span> <span class="n">lb</span><span class="p">))</span>
+
+        <span class="n">trajn</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">q</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">getvector</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="s1">&#39;col&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">trajn</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">qstar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">trajn</span><span class="p">))</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">trajn</span><span class="p">)</span>
+        <span class="n">success</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">trajn</span><span class="p">)</span>
+
+        <span class="n">lb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qlim</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">ub</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qlim</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">trajn</span><span class="p">):</span>
+
+            <span class="n">qm</span> <span class="o">=</span> <span class="n">q</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
+            <span class="n">J</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobe</span><span class="p">(</span><span class="n">qm</span><span class="p">)</span>
+
+            <span class="n">N</span> <span class="o">=</span> <span class="n">null</span><span class="p">(</span><span class="n">J</span><span class="p">)</span>
+
+            <span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="n">N</span><span class="p">,</span> <span class="o">-</span><span class="n">N</span><span class="p">]</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="n">ub</span> <span class="o">-</span> <span class="n">qm</span><span class="p">,</span> <span class="n">qm</span> <span class="o">-</span> <span class="n">lb</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],)</span>
+
+            <span class="n">con</span> <span class="o">=</span> <span class="n">LinearConstraint</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+            <span class="n">res</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">cost</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ub</span><span class="p">,</span> <span class="n">lb</span><span class="p">,</span> <span class="n">qm</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span>
+                <span class="n">x0</span><span class="p">,</span> <span class="n">constraints</span><span class="o">=</span><span class="n">con</span><span class="p">)</span>
+
+            <span class="n">qstar</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">qm</span> <span class="o">+</span> <span class="n">N</span> <span class="o">@</span> <span class="n">res</span><span class="o">.</span><span class="n">x</span>
+            <span class="n">error</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">fun</span>
+            <span class="n">success</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">success</span>
+
+        <span class="k">if</span> <span class="n">trajn</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">qstar</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">success</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">error</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">qstar</span><span class="p">,</span> <span class="n">success</span><span class="p">,</span> <span class="n">error</span></div></div>
 </pre></div>
 
           </div>
