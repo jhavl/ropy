@@ -151,6 +151,16 @@ M.Spong, S. Hutchinson &amp; M. Vidyasagar, Wiley 2006.</p></li>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt id="ropy.robot.SerialLink.SerialLink.qd">
+<em class="property">property </em><code class="sig-name descname">qd</code><a class="headerlink" href="#ropy.robot.SerialLink.SerialLink.qd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="ropy.robot.SerialLink.SerialLink.qdd">
+<em class="property">property </em><code class="sig-name descname">qdd</code><a class="headerlink" href="#ropy.robot.SerialLink.SerialLink.qdd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="ropy.robot.SerialLink.SerialLink.A">
 <code class="sig-name descname">A</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">joints</span></em>, <em class="sig-param"><span class="n">q</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ropy/robot/SerialLink.html#SerialLink.A"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ropy.robot.SerialLink.SerialLink.A" title="Permalink to this definition">¶</a></dt>
 <dd><p>Link forward kinematics.</p>
@@ -1397,6 +1407,111 @@ force/torque limit</p>
 <dd class="field-even"><ul class="simple">
 <li><p>Wrench vector and Jacobian must be from the same reference frame</p></li>
 <li><p>Tool transforms are taken into consideration for frame=1.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ropy.robot.SerialLink.SerialLink.jacob_dot">
+<code class="sig-name descname">jacob_dot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">q</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">qd</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ropy/robot/SerialLink.html#SerialLink.jacob_dot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ropy.robot.SerialLink.SerialLink.jacob_dot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Jqd = jacob_dot(q, qd) is the product (6) of the derivative of the
+manipulator Jacobian (in the world frame) and the joint rates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>q</strong> (<em>float ndarray</em><em>(</em><em>n</em><em>)</em>) – The joint angles/configuration of the robot (Optional,
+if not supplied will use the stored q values).</p></li>
+<li><p><strong>qd</strong> (<em>float ndarray</em><em>(</em><em>n</em><em>)</em>) – The joint angles/configuration of the robot (Optional,
+if not supplied will use the stored qd values).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Retrun Jdot</dt>
+<dd class="field-even"><p>The derivative of the manipulator Jacobian</p>
+</dd>
+<dt class="field-odd">Rtype Jdot</dt>
+<dd class="field-odd"><p>float ndarray(n)</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p>This term appears in the formulation for operational space
+control xdd = J(q)qdd + Jdot(q)qd</p></li>
+<li><p>Written as per the reference and not very efficient.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">References</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p>Fundamentals of Robotics Mechanical Systems (2nd ed)
+J. Angleles, Springer 2003.</p></li>
+<li><p>A unified approach for motion and force control of robot
+manipulators: The operational space formulation
+O Khatib, IEEE Journal on Robotics and Automation, 1987.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ropy.robot.SerialLink.SerialLink.maniplty">
+<code class="sig-name descname">maniplty</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">q</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'yoshikawa'</span></em>, <em class="sig-param"><span class="n">axes</span><span class="o">=</span><span class="default_value">[1, 1, 1, 1, 1, 1]</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ropy/robot/SerialLink.html#SerialLink.maniplty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ropy.robot.SerialLink.SerialLink.maniplty" title="Permalink to this definition">¶</a></dt>
+<dd><p>m = maniplty(q) is the yoshikawa manipulability index (scalar) for the
+robot at the joint configuration q (n) where n is the number of robot
+joints.  It indicates dexterity, that is, how isotropic the robot’s
+motion is with respect to the 6 degrees of Cartesian motion. The
+measure is high when the manipulator is capable of equal motion in all
+directions and low when the manipulator is close to a singularity.
+Yoshikawa’s manipulability measure is based on the shape of the
+velocity ellipsoid and depends only on kinematic parameters.</p>
+<p>m = maniplty(q, method=’asada’) as above except computes the asada
+manipulability measure. Asada’s manipulability measure is based on the
+shape of the acceleration ellipsoid which in turn is a function of the
+Cartesian inertia matrix and the dynamic parameters. The scalar
+measure computed here is the ratio of the smallest/largest ellipsoid
+axis. Ideally the ellipsoid would be spherical, giving a ratio of 1,
+but in practice will be less than 1.</p>
+<p>m = maniplty(q, method, axes) as above except axes specity which of
+the 6 degrees-of-freedom to concider in the measurement. For example
+set axes=[1, 1, 1, 0, 0, 0] to consider only translation or
+axes=[0, 0, 0, 1, 1, 1] to consider only rotation. Defaults to all
+motion.</p>
+<p>If q is a matrix (nxm) then m (mx1) is a vector of manipulability
+indices for each joint configuration specified by a row of q.</p>
+<p>[m, CI] = maniplty(q, OPTIONS) as above, but for the case of the Asada
+measure returns the Cartesian inertia matrix CI.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>q</strong> (<em>float ndarray</em><em>(</em><em>n</em><em>)</em>) – The joint angles/configuration of the robot (Optional,
+if not supplied will use the stored q values).</p></li>
+<li><p><strong>method</strong> (<em>string</em>) – Which method to use, ‘yoshikawa’ (default) or ‘asada’</p></li>
+<li><p><strong>axes</strong> – The degrees-of-freedom to be included for manipulability</p></li>
+</ul>
+</dd>
+</dl>
+<p>“type axes: int list</p>
+<dl class="field-list simple">
+<dt class="field-odd">Notes</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p>The ‘all’ option includes rotational and translational
+dexterity, but this involves adding different units. It can be
+more useful to look at the translational and rotational
+manipulability separately.</p></li>
+<li><p>Examples in the RVC book (1st edition) can be replicated by
+using the ‘all’ option</p></li>
+</ul>
+</dd>
+<dt class="field-even">References</dt>
+<dd class="field-even"><ul class="simple">
+<li><p>Analysis and control of robot manipulators with redundancy,
+T. Yoshikawa,
+Robotics Research: The First International Symposium
+(M. Brady and R. Paul, eds.),
+pp. 735-747, The MIT press, 1984.</p></li>
+<li><p>A geometrical representation of manipulator dynamics and its
+application to arm design, H. Asada,
+Journal of Dynamic Systems, Measurement, and Control,
+vol. 105, p. 131, 1983.</p></li>
+<li><p>Robotics, Vision &amp; Control, P. Corke, Springer 2011.</p></li>
 </ul>
 </dd>
 </dl>
