@@ -127,6 +127,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">qd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">qdd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">control_type</span> <span class="o">=</span> <span class="s1">&#39;v&#39;</span>
+
         <span class="c1"># Check the DH convention</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_dh</span><span class="p">()</span>
 
@@ -315,6 +317,10 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_qdd</span>
 
     <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">control_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_control_type</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">d</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">v</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">):</span>
@@ -359,6 +365,14 @@
     <span class="nd">@manuf</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">manuf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">manuf_new</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_manuf</span> <span class="o">=</span> <span class="n">manuf_new</span>
+
+    <span class="nd">@control_type</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">control_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cn</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cn</span> <span class="o">==</span> <span class="s1">&#39;p&#39;</span> <span class="ow">or</span> <span class="n">cn</span> <span class="o">==</span> <span class="s1">&#39;v&#39;</span> <span class="ow">or</span> <span class="n">cn</span> <span class="o">==</span> <span class="s1">&#39;a&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_control_type</span> <span class="o">=</span> <span class="n">cn</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;Control type must be one of </span><span class="se">\&#39;</span><span class="s1">p</span><span class="se">\&#39;</span><span class="s1">, </span><span class="se">\&#39;</span><span class="s1">v</span><span class="se">\&#39;</span><span class="s1">, or </span><span class="se">\&#39;</span><span class="s1">a</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">)</span>
 
     <span class="nd">@gravity</span><span class="o">.</span><span class="n">setter</span>
     <span class="nd">@_listen_rne</span>
