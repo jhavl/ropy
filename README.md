@@ -74,6 +74,7 @@ This example implements Manipulability Motion Control from [this paper](https://
 ```python
 import ropy as rp
 import numpy as np
+import spatialmath as sm
 import qpsolvers as qp
 
 # Initialise a Franka-Emika Panda Robot
@@ -89,8 +90,7 @@ wTe = panda.fkine()
 
 # The desired pose of the robot
 # = Current pose offset 20cm in the x-axis
-wTep = np.copy(wTe)
-wTep[0, 3] += 0.2
+wTep = wTe * sm.SE3.Tx(0.2)
 
 # Gain term (lambda) for control minimisation
 Y = 0.005
@@ -130,6 +130,7 @@ This example implements resolved-rate motion control within a position-based ser
 ```python
 import ropy as rp
 import numpy as np
+import spatialmath as sm
 
 # Initialise a Franka-Emika Panda Robot
 panda = rp.Panda()
@@ -144,8 +145,7 @@ wTe = panda.fkine()
 
 # The desired pose of the robot
 # = Current pose offset 20cm in the x-axis
-wTep = np.copy(wTe)
-wTep[0, 3] += 0.2
+wTep = wTe * sm.SE3.Tx(0.2)
 
 arrived = False
 while not arrived:
