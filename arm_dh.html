@@ -1,39 +1,162 @@
 
-<!DOCTYPE html>
 
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arm Type Robots - DH &#8212; Robotics Toolbox Python 0.3.2
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Arm Type Robots - DH &mdash; Robotics Toolbox Python 0.3.2
  documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Arm Type Robots - ETS" href="arm_ets.html" />
-    <link rel="prev" title="Robotics Toolbox for Python" href="index.html" />
+    <link rel="prev" title="Robotics Toolbox for Python" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
    
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
-  </head><body>
-  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
           
 
-          <div class="body" role="main">
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Robotics Toolbox Python
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Arm Type Robots - DH</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-ropy.robot.SerialLink">SerialLink</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-ropy.robot.Revolute">Revolute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-ropy.robot.Prismatic">Prismatic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-ropy.robot.Link">Link</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="arm_ets.html">Arm Type Robots - ETS</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Robotics Toolbox Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Arm Type Robots - DH</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/arm_dh.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="arm-type-robots-dh">
 <h1>Arm Type Robots - DH<a class="headerlink" href="#arm-type-robots-dh" title="Permalink to this headline">¶</a></h1>
@@ -55,8 +178,8 @@ described by a Link-class object using Denavit-Hartenberg parameters
 <li><p><strong>L</strong> (<em>list</em><em>(</em><em>n</em><em>)</em>) – Series of links which define the robot</p></li>
 <li><p><strong>name</strong> (<em>string</em>) – Name of the robot</p></li>
 <li><p><strong>manufacturer</strong> (<em>string</em>) – Manufacturer of the robot</p></li>
-<li><p><strong>base</strong> (<em>float ndarray</em><em>(</em><em>4</em><em>,</em><em>4</em><em>)</em>) – Locaation of the base</p></li>
-<li><p><strong>tool</strong> (<em>float ndarray</em><em>(</em><em>4</em><em>,</em><em>4</em><em>)</em>) – Location of the tool</p></li>
+<li><p><strong>base</strong> (<em>SE3</em>) – Locaation of the base</p></li>
+<li><p><strong>tool</strong> (<em>SE3</em>) – Location of the tool</p></li>
 <li><p><strong>gravity</strong> – The gravity vector</p></li>
 </ul>
 </dd>
@@ -2392,108 +2515,71 @@ joints 1 and 3.</p></li>
 </div>
 
 
+           </div>
+           
           </div>
-          
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<p class="logo">
-  <a href="index.html">
-    <img class="logo" src="_static/../../../../figs/icon.png" alt="Logo"/>
-    
-  </a>
-</p>
-
-
-
-<p class="blurb">Robotics Toolbox for Python</p>
-
-
-
-
-<p>
-<iframe src="https://ghbtns.com/github-btn.html?user=jhavl&repo=ropy&type=watch&count=true&size=large&v=2"
-  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
-</p>
-
-
-
-
-
-<h3>Navigation</h3>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Arm Type Robots - DH</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-ropy.robot.SerialLink">SerialLink</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-ropy.robot.Revolute">Revolute</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-ropy.robot.Prismatic">Prismatic</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-ropy.robot.Link">Link</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="arm_ets.html">Arm Type Robots - ETS</a></li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="index.html" title="previous chapter">Robotics Toolbox for Python</a></li>
-      <li>Next: <a href="arm_ets.html" title="next chapter">Arm Type Robots - ETS</a></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="arm_ets.html" class="btn btn-neutral float-right" title="Arm Type Robots - ETS" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Robotics Toolbox for Python" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
-</div>
-<script>$('#searchbox').show(0);</script>
+  
 
+  <hr/>
 
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Jesse Haviland
 
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-
-
-
+</footer>
 
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2020, Jesse Haviland.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="_sources/arm_dh.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
 
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
     
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-    
-    <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-102222819-3']);
-      _gaq.push(['_setDomainName', 'none']);
-      _gaq.push(['_setAllowLinker', true]);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-
+    ga('create', 'UA-102222819-3', 'auto');
+    ga('send', 'pageview');
     </script>
+
     
-  </body>
+   
+
+</body>
 </html>
