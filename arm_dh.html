@@ -1681,7 +1681,7 @@ the poses in the sequence.</p>
 for the corresponding trajectory step.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>q</strong> – The joint angles/configuration of the robot (Optional,
+<dd class="field-odd"><p><strong>q</strong> (<em>float ndarray</em><em>(</em><em>n</em><em>)</em>) – The joint angles/configuration of the robot (Optional,
 if not supplied will use the stored q values).</p>
 </dd>
 <dt class="field-even">Retrun qs</dt>
@@ -1706,6 +1706,86 @@ if not supplied will use the stored q values).</p>
 <dd class="field-even"><ul class="simple">
 <li><p>Robot must be redundant.</p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ropy.robot.SerialLink.SerialLink.teach">
+<code class="sig-name descname">teach</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">q</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ropy/robot/SerialLink.html#SerialLink.teach"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ropy.robot.SerialLink.SerialLink.teach" title="Permalink to this definition">¶</a></dt>
+<dd><p>Graphical teach pendant</p>
+<p>env = teach() creates a matplotlib plot which allows the user to
+“drive” a graphical robot using a graphical slider panel. The
+robot’s inital joint configuration is robot.q. This will block the
+programs execution.</p>
+<p>env = teach(q) as above except the robot’s initial configuration is
+set to q.</p>
+<p>env = teach(block=False) as avove except the plot is non-blocking. Note
+that the plot will exit when the python script finishes executing.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>block</strong> (<em>bool</em>) – Block operation of the code and keep the figure open</p></li>
+<li><p><strong>q</strong> (<em>float ndarray</em><em>(</em><em>n</em><em>)</em>) – The joint angles/configuration of the robot (Optional,
+if not supplied will use the stored q values).</p></li>
+<li><p><strong>dt</strong> (<em>int</em>) – if q is a trajectory, this describes the delay in
+milliseconds between frames</p></li>
+</ul>
+</dd>
+<dt class="field-even">Retrun</dt>
+<dd class="field-even"><p>A reference to the PyPlot object which controls the
+matplotlib figure</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>PyPlot</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><ul>
+<li><p>The slider limits are derived from the joint limit properties.
+If not set then</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>For revolute joints they are assumed to be [-pi, +pi]</p></li>
+<li><p>For prismatic joint they are assumed unknown and an error
+occurs.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ropy.robot.SerialLink.SerialLink.plot">
+<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">q</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dt</span><span class="o">=</span><span class="default_value">50</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ropy/robot/SerialLink.html#SerialLink.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ropy.robot.SerialLink.SerialLink.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Graphical display and animation</p>
+<p>env = plot() displays a graphical view of a robot based on the
+kinematic model, at it’s stored q value. A stick figure polyline
+joins the origins of the link coordinate frames. This method will be
+blocking.</p>
+<p>env = plot(q) as above except the robot is plotted with joint angles q</p>
+<p>env = plot(block=False) as avove except the plot in non-blocking. Note
+that the plot will exit when the python script finishes executing.</p>
+<p>env = plot(q, dt) as above except q is an nxm trajectory of joint
+angles. This creates an animation of the robot moving through the
+trajectories with a gap dt milliseconds in between.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>block</strong> (<em>bool</em>) – Block operation of the code and keep the figure open</p></li>
+<li><p><strong>q</strong> (<em>float ndarray</em><em>(</em><em>n</em><em>)</em>) – The joint angles/configuration of the robot (Optional,
+if not supplied will use the stored q values).</p></li>
+<li><p><strong>dt</strong> (<em>int</em>) – if q is a trajectory, this describes the delay in
+milliseconds between frames</p></li>
+</ul>
+</dd>
+<dt class="field-even">Retrun</dt>
+<dd class="field-even"><p>A reference to the PyPlot object which controls the
+matplotlib figure</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>PyPlot</p>
 </dd>
 </dl>
 </dd></dl>
