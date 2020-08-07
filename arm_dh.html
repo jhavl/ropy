@@ -1717,7 +1717,7 @@ if not supplied will use the stored q values).</p>
 <p>env = teach() creates a matplotlib plot which allows the user to
 “drive” a graphical robot using a graphical slider panel. The
 robot’s inital joint configuration is robot.q. This will block the
-programs execution.</p>
+programs execution. The plot will autoscale with an aspect ratio of 1.</p>
 <p>env = teach(q) as above except the robot’s initial configuration is
 set to q.</p>
 <p>env = teach(block=False) as avove except the plot is non-blocking. Note
@@ -1763,7 +1763,7 @@ occurs.</p></li>
 <p>env = plot() displays a graphical view of a robot based on the
 kinematic model, at it’s stored q value. A stick figure polyline
 joins the origins of the link coordinate frames. This method will be
-blocking.</p>
+blocking. The plot will autoscale with an aspect ratio of 1.</p>
 <p>env = plot(q) as above except the robot is plotted with joint angles q</p>
 <p>env = plot(block=False) as avove except the plot in non-blocking. Note
 that the plot will exit when the python script finishes executing.</p>
@@ -1778,6 +1778,81 @@ trajectories with a gap dt milliseconds in between.</p>
 if not supplied will use the stored q values).</p></li>
 <li><p><strong>dt</strong> (<em>int</em>) – if q is a trajectory, this describes the delay in
 milliseconds between frames</p></li>
+</ul>
+</dd>
+<dt class="field-even">Retrun</dt>
+<dd class="field-even"><p>A reference to the PyPlot object which controls the
+matplotlib figure</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>PyPlot</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ropy.robot.SerialLink.SerialLink.vellipse">
+<code class="sig-name descname">vellipse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">q</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">opt</span><span class="o">=</span><span class="default_value">'trans'</span></em>, <em class="sig-param"><span class="n">centre</span><span class="o">=</span><span class="default_value">[0, 0, 0]</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ropy/robot/SerialLink.html#SerialLink.vellipse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ropy.robot.SerialLink.SerialLink.vellipse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creare velocity ellipsoid object for plotting</p>
+<p>env = vellipse() creates a velocity ellipsoid for the robot at
+pose robot.q. The ellipsoid is centered at the origin.</p>
+<p>env = vellipse(q) as above except the robot is plotted with joint
+angles q</p>
+<p>env = vellipse(opt) as above except opt is ‘trans’ or ‘rot’ will
+plot either the translational or rotational velocity ellipsoid.</p>
+<p>env = vellipse(centre) as above except centre is either a 3
+vector or ‘ee’ which is the centre location of the ellipsoid</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>q</strong> (<em>float ndarray</em><em>(</em><em>n</em><em>)</em>) – The joint angles/configuration of the robot (Optional,
+if not supplied will use the stored q values).</p></li>
+<li><p><strong>opt</strong> (<em>string</em>) – ‘trans’ or ‘rot’ will plot either the translational or
+rotational velocity ellipsoid</p></li>
+<li><p><strong>centre</strong> (<em>list</em><em> or </em><em>str</em><em>(</em><em>'ee'</em><em>)</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Retrun</dt>
+<dd class="field-even"><p>An EllipsePlot object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>EllipsePlot</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ropy.robot.SerialLink.SerialLink.plot_vellipse">
+<code class="sig-name descname">plot_vellipse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">q</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">vellipse</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">limits</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">opt</span><span class="o">=</span><span class="default_value">'trans'</span></em>, <em class="sig-param"><span class="n">centre</span><span class="o">=</span><span class="default_value">[0, 0, 0]</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ropy/robot/SerialLink.html#SerialLink.plot_vellipse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ropy.robot.SerialLink.SerialLink.plot_vellipse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the velocity ellipsoid for seriallink manipulator</p>
+<p>env = plot_vellipse() displays the velocity ellipsoid for the robot at
+pose robot.q. The ellipsoid is centered at the origin. This method
+will be blocking. The plot will autoscale with an aspect ratio of 1.</p>
+<p>env = plot_vellipse(block=False) as avove except the plot in
+non-blocking. Note that the plot will exit when the python script
+finishes executing.</p>
+<p>env = plot_vellipse(q) as above except the robot is plotted with joint
+angles q</p>
+<p>env = plot_vellipse(vellipse) specifies a custon ellipse to plot. If
+not supplied this function calculates the vellipse based on q</p>
+<p>env = plot_vellipse(limits) as above except the view limits of the
+plot are set by limits.</p>
+<p>env = plot_vellipse(opt) as above except opt is ‘trans’ or ‘rot’ will
+plot either the translational or rotational velocity ellipsoid.</p>
+<p>env = plot_vellipse(centre) as above except centre is either a 3
+vector or ‘ee’ which is the centre location of the ellipsoid</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>block</strong> (<em>bool</em>) – Block operation of the code and keep the figure open</p></li>
+<li><p><strong>q</strong> (<em>float ndarray</em><em>(</em><em>n</em><em>)</em>) – The joint angles/configuration of the robot (Optional,
+if not supplied will use the stored q values).</p></li>
+<li><p><strong>vellipse</strong> (<em>EllipsePlot</em>) – the vellocity ellipsoid to plot</p></li>
+<li><p><strong>limits</strong> (<em>ndarray</em><em>(</em><em>6</em><em>)</em>) – Custom view limits for the plot. If not supplied will
+autoscale</p></li>
+<li><p><strong>opt</strong> (<em>string</em>) – ‘trans’ or ‘rot’ will plot either the translational or
+rotational velocity ellipsoid</p></li>
+<li><p><strong>centre</strong> (<em>list</em><em> or </em><em>str</em><em>(</em><em>'ee'</em><em>)</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Retrun</dt>
