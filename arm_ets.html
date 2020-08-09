@@ -228,6 +228,21 @@ J. Haviland and P. Corke</p></li>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt id="ropy.robot.ETS.ETS.qd">
+<em class="property">property </em><code class="sig-name descname">qd</code><a class="headerlink" href="#ropy.robot.ETS.ETS.qd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="ropy.robot.ETS.ETS.qdd">
+<em class="property">property </em><code class="sig-name descname">qdd</code><a class="headerlink" href="#ropy.robot.ETS.ETS.qdd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="ropy.robot.ETS.ETS.control_type">
+<em class="property">property </em><code class="sig-name descname">control_type</code><a class="headerlink" href="#ropy.robot.ETS.ETS.control_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="ropy.robot.ETS.ETS.base">
 <em class="property">property </em><code class="sig-name descname">base</code><a class="headerlink" href="#ropy.robot.ETS.ETS.base" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -242,6 +257,13 @@ J. Haviland and P. Corke</p></li>
 <code class="sig-name descname">fkine</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">q</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ropy/robot/ETS.html#ETS.fkine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ropy.robot.ETS.ETS.fkine" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluates the forward kinematics of a robot based on its ETS and
 joint angles q.</p>
+<p>T = fkine(q) evaluates forward kinematics for the robot at joint
+configuration q.</p>
+<p>T = fkine() as above except uses the stored q value of the
+robot object.</p>
+<p>Trajectory operation:
+Calculates fkine for each point on a trajectory of joints q where
+q is (nxm) and the returning SE3 in (m)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>q</strong> (<em>float ndarray</em><em>(</em><em>n</em><em>)</em>) – The joint angles/configuration of the robot (Optional,
@@ -254,8 +276,47 @@ end-effector</p>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>SE3</p>
 </dd>
-<dt class="field-even">References</dt>
+<dt class="field-even">Notes</dt>
 <dd class="field-even"><ul class="simple">
+<li><p>The robot’s base or tool transform, if present, are incorporated
+into the result.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">References</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p>Kinematic Derivatives using the Elementary Transform
+Sequence, J. Haviland and P. Corke</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ropy.robot.ETS.ETS.allfkine">
+<code class="sig-name descname">allfkine</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">q</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ropy/robot/ETS.html#ETS.allfkine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ropy.robot.ETS.ETS.allfkine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tall = allfkine(q) evaluates fkine for each joint within a robot and
+returns a trajecotry of poses.</p>
+<p>Tall = allfkine() as above except uses the stored q value of the
+robot object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>q</strong> (<em>float ndarray</em><em>(</em><em>n</em><em>)</em>) – The joint angles/configuration of the robot (Optional,
+if not supplied will use the stored q values).</p>
+</dd>
+<dt class="field-even">Return T</dt>
+<dd class="field-even"><p>Homogeneous transformation trajectory</p>
+</dd>
+<dt class="field-odd">Rtype T</dt>
+<dd class="field-odd"><p>SE3 list</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p>The robot’s base transform, if present, are incorporated
+into the result.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">References</dt>
+<dd class="field-odd"><ul class="simple">
 <li><p>Kinematic Derivatives using the Elementary Transform
 Sequence, J. Haviland and P. Corke</p></li>
 </ul>
@@ -455,12 +516,12 @@ if not supplied will use the stored q values).</p>
 
 <dl class="py method">
 <dt id="ropy.robot.ETS.ETS.teach">
-<code class="sig-name descname">teach</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">q</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ropy/robot/ETS.html#ETS.teach"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ropy.robot.ETS.ETS.teach" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">teach</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">q</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">limits</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">jointaxes</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">eeframe</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">shadow</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ropy/robot/ETS.html#ETS.teach"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ropy.robot.ETS.ETS.teach" title="Permalink to this definition">¶</a></dt>
 <dd><p>Graphical teach pendant</p>
 <p>env = teach() creates a matplotlib plot which allows the user to
 “drive” a graphical robot using a graphical slider panel. The
 robot’s inital joint configuration is robot.q. This will block the
-programs execution.</p>
+programs execution. The plot will autoscale with an aspect ratio of 1.</p>
 <p>env = teach(q) as above except the robot’s initial configuration is
 set to q.</p>
 <p>env = teach(block=False) as avove except the plot is non-blocking. Note
@@ -471,8 +532,17 @@ that the plot will exit when the python script finishes executing.</p>
 <li><p><strong>block</strong> (<em>bool</em>) – Block operation of the code and keep the figure open</p></li>
 <li><p><strong>q</strong> (<em>float ndarray</em><em>(</em><em>n</em><em>)</em>) – The joint angles/configuration of the robot (Optional,
 if not supplied will use the stored q values).</p></li>
-<li><p><strong>dt</strong> (<em>int</em>) – if q is a trajectory, this describes the delay in
-milliseconds between frames</p></li>
+<li><p><strong>limits</strong> (<em>ndarray</em><em>(</em><em>6</em><em>)</em>) – Custom view limits for the plot. If not supplied will
+autoscale, [x1, x2, y1, y2, z1, z2]</p></li>
+<li><p><strong>jointaxes</strong> (<em>bool</em>) – (Plot Option) Plot an arrow indicating the axes in
+which the joint revolves around(revolute joint) or translates
+along (prosmatic joint)</p></li>
+<li><p><strong>eeframe</strong> (<em>bool</em>) – (Plot Option) Plot the end-effector coordinate frame
+at the location of the end-effector. Uses three arrows, red,
+green and blue to indicate the x, y, and z-axes.</p></li>
+<li><p><strong>shadow</strong> (<em>bool</em>) – (Plot Option) Plot a shadow of the robot in the x-y
+plane</p></li>
+<li><p><strong>name</strong> (<em>bool</em>) – (Plot Option) Plot the name of the robot near its base</p></li>
 </ul>
 </dd>
 <dt class="field-even">Retrun</dt>
@@ -501,12 +571,12 @@ occurs.</p></li>
 
 <dl class="py method">
 <dt id="ropy.robot.ETS.ETS.plot">
-<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">q</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dt</span><span class="o">=</span><span class="default_value">50</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ropy/robot/ETS.html#ETS.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ropy.robot.ETS.ETS.plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">q</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dt</span><span class="o">=</span><span class="default_value">50</span></em>, <em class="sig-param"><span class="n">limits</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">vellipse</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">fellipse</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">jointaxes</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">eeframe</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">shadow</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ropy/robot/ETS.html#ETS.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ropy.robot.ETS.ETS.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Graphical display and animation</p>
 <p>env = plot() displays a graphical view of a robot based on the
 kinematic model, at it’s stored q value. A stick figure polyline
 joins the origins of the link coordinate frames. This method will be
-blocking.</p>
+blocking. The plot will autoscale with an aspect ratio of 1.</p>
 <p>env = plot(q) as above except the robot is plotted with joint angles q</p>
 <p>env = plot(block=False) as avove except the plot in non-blocking. Note
 that the plot will exit when the python script finishes executing.</p>
@@ -521,6 +591,21 @@ trajectories with a gap dt milliseconds in between.</p>
 if not supplied will use the stored q values).</p></li>
 <li><p><strong>dt</strong> (<em>int</em>) – if q is a trajectory, this describes the delay in
 milliseconds between frames</p></li>
+<li><p><strong>limits</strong> (<em>ndarray</em><em>(</em><em>6</em><em>)</em>) – Custom view limits for the plot. If not supplied will
+autoscale, [x1, x2, y1, y2, z1, z2]</p></li>
+<li><p><strong>vellipse</strong> (<em>bool</em>) – (Plot Option) Plot the velocity ellipse at the
+end-effector</p></li>
+<li><p><strong>vellipse</strong> – (Plot Option) Plot the force ellipse at the
+end-effector</p></li>
+<li><p><strong>jointaxes</strong> (<em>bool</em>) – (Plot Option) Plot an arrow indicating the axes in
+which the joint revolves around(revolute joint) or translates
+along (prosmatic joint)</p></li>
+<li><p><strong>eeframe</strong> (<em>bool</em>) – (Plot Option) Plot the end-effector coordinate frame
+at the location of the end-effector. Uses three arrows, red,
+green and blue to indicate the x, y, and z-axes.</p></li>
+<li><p><strong>shadow</strong> (<em>bool</em>) – (Plot Option) Plot a shadow of the robot in the x-y
+plane</p></li>
+<li><p><strong>name</strong> (<em>bool</em>) – (Plot Option) Plot the name of the robot near its base</p></li>
 </ul>
 </dd>
 <dt class="field-even">Retrun</dt>
