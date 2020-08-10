@@ -166,7 +166,7 @@
 <p>&#64;author Jesse Haviland</p>
 <dl class="py class">
 <dt id="ropy.robot.SerialLink.SerialLink">
-<em class="property">class </em><code class="sig-prename descclassname">ropy.robot.SerialLink.</code><code class="sig-name descname">SerialLink</code><span class="sig-paren">(</span><em class="sig-param">L</em>, <em class="sig-param">name='noname'</em>, <em class="sig-param">manufacturer=''</em>, <em class="sig-param">base=   1         0         0         0              0         1         0         0              0         0         1         0              0         0         0         1</em>, <em class="sig-param">tool=   1         0         0         0              0         1         0         0              0         0         1         0              0         0         0         1</em>, <em class="sig-param">gravity=array([0.</em>, <em class="sig-param">0.</em>, <em class="sig-param">9.81])</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ropy/robot/SerialLink.html#SerialLink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ropy.robot.SerialLink.SerialLink" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ropy.robot.SerialLink.</code><code class="sig-name descname">SerialLink</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">L</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'noname'</span></em>, <em class="sig-param"><span class="n">manufacturer</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">base</span><span class="o">=</span><span class="default_value">SE3(array([[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0]]))</span></em>, <em class="sig-param"><span class="n">tool</span><span class="o">=</span><span class="default_value">SE3(array([[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0]]))</span></em>, <em class="sig-param"><span class="n">gravity</span><span class="o">=</span><span class="default_value">array([0.0, 0.0, 9.81])</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ropy/robot/SerialLink.html#SerialLink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ropy.robot.SerialLink.SerialLink" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A superclass for arm type robots. A concrete class that represents a
 serial-link arm-type robot.  Each link and joint in the chain is
@@ -1980,6 +1980,101 @@ matplotlib figure</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>PyPlot</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ropy.robot.SerialLink.SerialLink.plot2">
+<code class="sig-name descname">plot2</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">q</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dt</span><span class="o">=</span><span class="default_value">50</span></em>, <em class="sig-param"><span class="n">limits</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">vellipse</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">fellipse</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">eeframe</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ropy/robot/SerialLink.html#SerialLink.plot2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ropy.robot.SerialLink.SerialLink.plot2" title="Permalink to this definition">¶</a></dt>
+<dd><p>2D Graphical display and animation</p>
+<p>env = plot2() displays a 2D graphical view of a robot based on the
+kinematic model, at it’s stored q value. A stick figure polyline
+joins the origins of the link coordinate frames. This method will be
+blocking. The plot will autoscale with an aspect ratio of 1.</p>
+<p>env = plot2(q) as above except the robot is plotted with joint angles q</p>
+<p>env = plot2(block=False) as avove except the plot in non-blocking. Note
+that the plot will exit when the python script finishes executing.</p>
+<p>env = plot2(q, dt) as above except q is an nxm trajectory of joint
+angles. This creates an animation of the robot moving through the
+trajectories with a gap dt milliseconds in between.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>block</strong> (<em>bool</em>) – Block operation of the code and keep the figure open</p></li>
+<li><p><strong>q</strong> (<em>float ndarray</em><em>(</em><em>n</em><em>)</em>) – The joint angles/configuration of the robot (Optional,
+if not supplied will use the stored q values).</p></li>
+<li><p><strong>dt</strong> (<em>int</em>) – if q is a trajectory, this describes the delay in
+milliseconds between frames</p></li>
+<li><p><strong>limits</strong> (<em>ndarray</em><em>(</em><em>6</em><em>)</em>) – Custom view limits for the plot. If not supplied will
+autoscale, [x1, x2, y1, y2, z1, z2]</p></li>
+<li><p><strong>vellipse</strong> (<em>bool</em>) – (Plot Option) Plot the velocity ellipse at the
+end-effector</p></li>
+<li><p><strong>vellipse</strong> – (Plot Option) Plot the force ellipse at the
+end-effector</p></li>
+<li><p><strong>eeframe</strong> (<em>bool</em>) – (Plot Option) Plot the end-effector coordinate frame
+at the location of the end-effector. Uses three arrows, red,
+green and blue to indicate the x, y, and z-axes.</p></li>
+<li><p><strong>name</strong> (<em>bool</em>) – (Plot Option) Plot the name of the robot near its base</p></li>
+</ul>
+</dd>
+<dt class="field-even">Retrun</dt>
+<dd class="field-even"><p>A reference to the PyPlot object which controls the
+matplotlib figure</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>PyPlot</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ropy.robot.SerialLink.SerialLink.teach2">
+<code class="sig-name descname">teach2</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">q</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">limits</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">eeframe</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ropy/robot/SerialLink.html#SerialLink.teach2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ropy.robot.SerialLink.SerialLink.teach2" title="Permalink to this definition">¶</a></dt>
+<dd><p>2D Graphical teach pendant</p>
+<p>env = teach2() creates a 2D matplotlib plot which allows the user to
+“drive” a graphical robot using a graphical slider panel. The
+robot’s inital joint configuration is robot.q. This will block the
+programs execution. The plot will autoscale with an aspect ratio of 1.</p>
+<p>env = teach2(q) as above except the robot’s initial configuration is
+set to q.</p>
+<p>env = teach2(block=False) as avove except the plot is non-blocking.
+Note that the plot will exit when the python script finishes
+executing.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>block</strong> (<em>bool</em>) – Block operation of the code and keep the figure open</p></li>
+<li><p><strong>q</strong> (<em>float ndarray</em><em>(</em><em>n</em><em>)</em>) – The joint angles/configuration of the robot (Optional,
+if not supplied will use the stored q values).</p></li>
+<li><p><strong>limits</strong> (<em>ndarray</em><em>(</em><em>6</em><em>)</em>) – Custom view limits for the plot. If not supplied will
+autoscale, [x1, x2, y1, y2, z1, z2]</p></li>
+<li><p><strong>eeframe</strong> (<em>bool</em>) – (Plot Option) Plot the end-effector coordinate frame
+at the location of the end-effector. Uses three arrows, red,
+green and blue to indicate the x, y, and z-axes.</p></li>
+<li><p><strong>name</strong> (<em>bool</em>) – (Plot Option) Plot the name of the robot near its base</p></li>
+</ul>
+</dd>
+<dt class="field-even">Retrun</dt>
+<dd class="field-even"><p>A reference to the PyPlot object which controls the
+matplotlib figure</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>PyPlot</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><ul>
+<li><p>The slider limits are derived from the joint limit properties.
+If not set then</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>For revolute joints they are assumed to be [-pi, +pi]</p></li>
+<li><p>For prismatic joint they are assumed unknown and an error
+occurs.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
