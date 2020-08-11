@@ -5,7 +5,7 @@
 
 import ropy as rp
 from ropy.backend import xacro
-
+# from ropy.backend import urdf
 
 # import spatialmath as sm
 # import numpy as np
@@ -81,5 +81,12 @@ from ropy.backend import xacro
 
 ###########################################
 
+f = 'ropy/models/xarco/panda/robots/panda_arm_hand.urdf.xacro'
+a = xacro.main(f)
+print(a)
 
-xacro.main('ropy/models/xarco/panda/panda_arm_hand.urdf.xacro')
+rob = rp.backend.URDF.loadstr(a, f)
+
+for link in rob.links:
+    print(link.name)
+    print(link.inertial.origin)
