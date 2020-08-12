@@ -12,8 +12,6 @@ import xml.etree.ElementTree as ET
 import spatialmath as sm
 from io import BytesIO
 
-import networkx as nx
-
 from .utils import (parse_origin, configure_origin)
 
 
@@ -2435,37 +2433,37 @@ class URDF(URDFType):
         self._merge_materials()
 
         # Validate the joints and transmissions
-        actuated_joints = self._validate_joints()
+        # actuated_joints = self._validate_joints()
         self._validate_transmissions()
 
-        # Create the link graph and base link/end link sets
-        self._G = nx.DiGraph()
+        # # Create the link graph and base link/end link sets
+        # self._G = nx.DiGraph()
 
-        # Add all links
-        for link in self.links:
-            self._G.add_node(link)
+        # # Add all links
+        # for link in self.links:
+        #     self._G.add_node(link)
 
-        # Add all edges from CHILDREN TO PARENTS, with joints as their object
-        for joint in self.joints:
-            parent = self._link_map[joint.parent]
-            child = self._link_map[joint.child]
-            self._G.add_edge(child, parent, joint=joint)
+        # # Add all edges from CHILDREN TO PARENTS, with joints as their object
+        # for joint in self.joints:
+        #     parent = self._link_map[joint.parent]
+        #     child = self._link_map[joint.child]
+        #     self._G.add_edge(child, parent, joint=joint)
 
-        # Validate the graph and get the base and end links
-        self._base_link, self._end_links = self._validate_graph()
+        # # Validate the graph and get the base and end links
+        # self._base_link, self._end_links = self._validate_graph()
 
-        # Cache the paths to the base link
-        self._paths_to_base = nx.shortest_path(
-            self._G, target=self._base_link
-        )
+        # # Cache the paths to the base link
+        # self._paths_to_base = nx.shortest_path(
+        #     self._G, target=self._base_link
+        # )
 
-        self._actuated_joints = self._sort_joints(actuated_joints)
+        # self._actuated_joints = self._sort_joints(actuated_joints)
 
-        # Cache the reverse topological order (useful for speeding up FK,
-        # as we want to start at the base and work outward to cache
-        # computation.
-        self._reverse_topo = list(
-          reversed(list(nx.topological_sort(self._G))))
+        # # Cache the reverse topological order (useful for speeding up FK,
+        # # as we want to start at the base and work outward to cache
+        # # computation.
+        # self._reverse_topo = list(
+        #   reversed(list(nx.topological_sort(self._G))))
 
     @property
     def name(self):
@@ -2652,177 +2650,177 @@ class URDF(URDFType):
             limits.append(limit)
         return np.array(limits)
 
-    def link_fk(self, cfg=None, link=None, links=None, use_names=False):
-        """Computes the poses of the URDF's links via forward kinematics.
-        Parameters
-        ----------
-        cfg : dict or (n), float
-            A map from joints or joint names to configuration values for
-            each joint, or a list containing a value for each actuated joint
-            in sorted order from the base link.
-            If not specified, all joints are assumed to be in their default
-            configurations.
-        link : str or :class:`.Link`
-            A single link or link name to return a pose for.
-        links : list of str or list of :class:`.Link`
-            The links or names of links to perform forward kinematics on.
-            Only these links will be in the returned map. If neither
-            link nor links are specified all links are returned.
-        use_names : bool
-            If True, the returned dictionary will have keys that are string
-            link names rather than the links themselves.
-        Returns
-        -------
-        fk : dict or (4,4) float
-            A map from links to 4x4 homogenous transform matrices that
-            position them relative to the base link's frame, or a single
-            4x4 matrix if ``link`` is specified.
-        """
-        # Process config value
-        joint_cfg = self._process_cfg(cfg)
+    # def link_fk(self, cfg=None, link=None, links=None, use_names=False):
+    #     """Computes the poses of the URDF's links via forward kinematics.
+    #     Parameters
+    #     ----------
+    #     cfg : dict or (n), float
+    #         A map from joints or joint names to configuration values for
+    #         each joint, or a list containing a value for each actuated joint
+    #         in sorted order from the base link.
+    #         If not specified, all joints are assumed to be in their default
+    #         configurations.
+    #     link : str or :class:`.Link`
+    #         A single link or link name to return a pose for.
+    #     links : list of str or list of :class:`.Link`
+    #         The links or names of links to perform forward kinematics on.
+    #         Only these links will be in the returned map. If neither
+    #         link nor links are specified all links are returned.
+    #     use_names : bool
+    #         If True, the returned dictionary will have keys that are string
+    #         link names rather than the links themselves.
+    #     Returns
+    #     -------
+    #     fk : dict or (4,4) float
+    #         A map from links to 4x4 homogenous transform matrices that
+    #         position them relative to the base link's frame, or a single
+    #         4x4 matrix if ``link`` is specified.
+    #     """
+    #     # Process config value
+    #     joint_cfg = self._process_cfg(cfg)
 
-        # Process link set
-        link_set = set()
-        if link is not None:
-            if isinstance(link, str):
-                link_set.add(self._link_map[link])
-            elif isinstance(link, Link):
-                link_set.add(link)
-        elif links is not None:
-            for lnk in links:
-                if isinstance(lnk, str):
-                    link_set.add(self._link_map[lnk])
-                elif isinstance(lnk, Link):
-                    link_set.add(lnk)
-                else:
-                    raise TypeError('Got object of type {} in links list'
-                                    .format(type(lnk)))
-        else:
-            link_set = self.links
+    #     # Process link set
+    #     link_set = set()
+    #     if link is not None:
+    #         if isinstance(link, str):
+    #             link_set.add(self._link_map[link])
+    #         elif isinstance(link, Link):
+    #             link_set.add(link)
+    #     elif links is not None:
+    #         for lnk in links:
+    #             if isinstance(lnk, str):
+    #                 link_set.add(self._link_map[lnk])
+    #             elif isinstance(lnk, Link):
+    #                 link_set.add(lnk)
+    #             else:
+    #                 raise TypeError('Got object of type {} in links list'
+    #                                 .format(type(lnk)))
+    #     else:
+    #         link_set = self.links
 
-        # Compute forward kinematics in reverse topological order
-        fk = OrderedDict()
-        for lnk in self._reverse_topo:
-            if lnk not in link_set:
-                continue
-            pose = np.eye(4, dtype=np.float64)
-            path = self._paths_to_base[lnk]
-            for i in range(len(path) - 1):
-                child = path[i]
-                parent = path[i + 1]
-                joint = self._G.get_edge_data(child, parent)['joint']
+    #     # Compute forward kinematics in reverse topological order
+    #     fk = OrderedDict()
+    #     for lnk in self._reverse_topo:
+    #         if lnk not in link_set:
+    #             continue
+    #         pose = np.eye(4, dtype=np.float64)
+    #         path = self._paths_to_base[lnk]
+    #         for i in range(len(path) - 1):
+    #             child = path[i]
+    #             parent = path[i + 1]
+    #             joint = self._G.get_edge_data(child, parent)['joint']
 
-                cfg = None
-                if joint.mimic is not None:
-                    mimic_joint = self._joint_map[joint.mimic.joint]
-                    if mimic_joint in joint_cfg:
-                        cfg = joint_cfg[mimic_joint]
-                        cfg = joint.mimic.multiplier * cfg + joint.mimic.offset
-                elif joint in joint_cfg:
-                    cfg = joint_cfg[joint]
-                pose = joint.get_child_pose(cfg).dot(pose)
+    #             cfg = None
+    #             if joint.mimic is not None:
+    #                 mimic_joint = self._joint_map[joint.mimic.joint]
+    #                 if mimic_joint in joint_cfg:
+    #                     cfg = joint_cfg[mimic_joint]
+    #                     cfg = joint.mimic.multiplier * cfg + joint.mimic.offset
+    #             elif joint in joint_cfg:
+    #                 cfg = joint_cfg[joint]
+    #             pose = joint.get_child_pose(cfg).dot(pose)
 
-                # Check existing FK to see if we can exit early
-                if parent in fk:
-                    pose = fk[parent].dot(pose)
-                    break
-            fk[lnk] = pose
+    #             # Check existing FK to see if we can exit early
+    #             if parent in fk:
+    #                 pose = fk[parent].dot(pose)
+    #                 break
+    #         fk[lnk] = pose
 
-        if link:
-            if isinstance(link, str):
-                return fk[self._link_map[link]]
-            else:
-                return fk[link]
-        if use_names:
-            return {ell.name: fk[ell] for ell in fk}
-        return fk
+    #     if link:
+    #         if isinstance(link, str):
+    #             return fk[self._link_map[link]]
+    #         else:
+    #             return fk[link]
+    #     if use_names:
+    #         return {ell.name: fk[ell] for ell in fk}
+    #     return fk
 
-    def link_fk_batch(self, cfgs=None, link=None, links=None, use_names=False):
-        """Computes the poses of the URDF's links via forward kinematics in a batch.
-        Parameters
-        ----------
-        cfgs : dict, list of dict, or (n,m), float
-            One of the following: (A) a map from joints or joint names to
-            vectors of joint configuration values, (B) a list of maps from
-            joints or joint names to single configuration values, or (C) a
-            list of ``n`` configuration vectors, each of which has a vector
-            with an entry for each actuated joint.
-        link : str or :class:`.Link`
-            A single link or link name to return a pose for.
-        links : list of str or list of :class:`.Link`
-            The links or names of links to perform forward kinematics on.
-            Only these links will be in the returned map. If neither
-            link nor links are specified all links are returned.
-        use_names : bool
-            If True, the returned dictionary will have keys that are string
-            link names rather than the links themselves.
-        Returns
-        -------
-        fk : dict or (n,4,4) float
-            A map from links to a (n,4,4) vector of homogenous transform
-            matrices that position the links relative to the base link's
-            frame, or a single nx4x4 matrix if ``link`` is specified.
-        """
-        joint_cfgs, n_cfgs = self._process_cfgs(cfgs)
+    # def link_fk_batch(self, cfgs=None, link=None, links=None, use_names=False):
+    #     """Computes the poses of the URDF's links via forward kinematics in a batch.
+    #     Parameters
+    #     ----------
+    #     cfgs : dict, list of dict, or (n,m), float
+    #         One of the following: (A) a map from joints or joint names to
+    #         vectors of joint configuration values, (B) a list of maps from
+    #         joints or joint names to single configuration values, or (C) a
+    #         list of ``n`` configuration vectors, each of which has a vector
+    #         with an entry for each actuated joint.
+    #     link : str or :class:`.Link`
+    #         A single link or link name to return a pose for.
+    #     links : list of str or list of :class:`.Link`
+    #         The links or names of links to perform forward kinematics on.
+    #         Only these links will be in the returned map. If neither
+    #         link nor links are specified all links are returned.
+    #     use_names : bool
+    #         If True, the returned dictionary will have keys that are string
+    #         link names rather than the links themselves.
+    #     Returns
+    #     -------
+    #     fk : dict or (n,4,4) float
+    #         A map from links to a (n,4,4) vector of homogenous transform
+    #         matrices that position the links relative to the base link's
+    #         frame, or a single nx4x4 matrix if ``link`` is specified.
+    #     """
+    #     joint_cfgs, n_cfgs = self._process_cfgs(cfgs)
 
-        # Process link set
-        link_set = set()
-        if link is not None:
-            if isinstance(link, str):
-                link_set.add(self._link_map[link])
-            elif isinstance(link, Link):
-                link_set.add(link)
-        elif links is not None:
-            for lnk in links:
-                if isinstance(lnk, str):
-                    link_set.add(self._link_map[lnk])
-                elif isinstance(lnk, Link):
-                    link_set.add(lnk)
-                else:
-                    raise TypeError('Got object of type {} in links list'
-                                    .format(type(lnk)))
-        else:
-            link_set = self.links
+    #     # Process link set
+    #     link_set = set()
+    #     if link is not None:
+    #         if isinstance(link, str):
+    #             link_set.add(self._link_map[link])
+    #         elif isinstance(link, Link):
+    #             link_set.add(link)
+    #     elif links is not None:
+    #         for lnk in links:
+    #             if isinstance(lnk, str):
+    #                 link_set.add(self._link_map[lnk])
+    #             elif isinstance(lnk, Link):
+    #                 link_set.add(lnk)
+    #             else:
+    #                 raise TypeError('Got object of type {} in links list'
+    #                                 .format(type(lnk)))
+    #     else:
+    #         link_set = self.links
 
-        # Compute FK mapping each link to a vector of matrices, one matrix
-        # per cfg
-        fk = OrderedDict()
-        for lnk in self._reverse_topo:
-            if lnk not in link_set:
-                continue
-            poses = np.tile(np.eye(4, dtype=np.float64), (n_cfgs, 1, 1))
-            path = self._paths_to_base[lnk]
-            for i in range(len(path) - 1):
-                child = path[i]
-                parent = path[i + 1]
-                joint = self._G.get_edge_data(child, parent)['joint']
+    #     # Compute FK mapping each link to a vector of matrices, one matrix
+    #     # per cfg
+    #     fk = OrderedDict()
+    #     for lnk in self._reverse_topo:
+    #         if lnk not in link_set:
+    #             continue
+    #         poses = np.tile(np.eye(4, dtype=np.float64), (n_cfgs, 1, 1))
+    #         path = self._paths_to_base[lnk]
+    #         for i in range(len(path) - 1):
+    #             child = path[i]
+    #             parent = path[i + 1]
+    #             joint = self._G.get_edge_data(child, parent)['joint']
 
-                cfg_vals = None
-                if joint.mimic is not None:
-                    mimic_joint = self._joint_map[joint.mimic.joint]
-                    if mimic_joint in joint_cfgs:
-                        cfg_vals = joint_cfgs[mimic_joint]
-                        cfg_vals = \
-                            joint.mimic.multiplier * cfg_vals \
-                            + joint.mimic.offset
-                elif joint in joint_cfgs:
-                    cfg_vals = joint_cfgs[joint]
-                poses = np.matmul(
-                    joint.get_child_poses(cfg_vals, n_cfgs), poses)
+    #             cfg_vals = None
+    #             if joint.mimic is not None:
+    #                 mimic_joint = self._joint_map[joint.mimic.joint]
+    #                 if mimic_joint in joint_cfgs:
+    #                     cfg_vals = joint_cfgs[mimic_joint]
+    #                     cfg_vals = \
+    #                         joint.mimic.multiplier * cfg_vals \
+    #                         + joint.mimic.offset
+    #             elif joint in joint_cfgs:
+    #                 cfg_vals = joint_cfgs[joint]
+    #             poses = np.matmul(
+    #                 joint.get_child_poses(cfg_vals, n_cfgs), poses)
 
-                if parent in fk:
-                    poses = np.matmul(fk[parent], poses)
-                    break
-            fk[lnk] = poses
+    #             if parent in fk:
+    #                 poses = np.matmul(fk[parent], poses)
+    #                 break
+    #         fk[lnk] = poses
 
-        if link:
-            if isinstance(link, str):
-                return fk[self._link_map[link]]
-            else:
-                return fk[link]
-        if use_names:
-            return {ell.name: fk[ell] for ell in fk}
-        return fk
+    #     if link:
+    #         if isinstance(link, str):
+    #             return fk[self._link_map[link]]
+    #         else:
+    #             return fk[link]
+    #     if use_names:
+    #         return {ell.name: fk[ell] for ell in fk}
+    #     return fk
 
     def visual_geometry_fk(self, cfg=None, links=None):
         """Computes the poses of the URDF's visual geometries using fk.
@@ -3129,61 +3127,61 @@ class URDF(URDFType):
     #     tree.write(file_obj, pretty_print=True,
     #                xml_declaration=True, encoding='utf-8')
 
-    def join(self, other, link, origin=None, name=None, prefix=''):
-        """Join another URDF to this one by rigidly fixturing the two at a link.
-        Parameters
-        ----------
-        other : :class:.`URDF`
-            Another URDF to fuze to this one.
-        link : :class:`.Link` or str
-            The link of this URDF to attach the other URDF to.
-        origin : (4,4) float, optional
-            The location in this URDF's link frame to attach the base link of
-            the other URDF at.
-        name : str, optional
-            A name for the new URDF.
-        prefix : str, optional
-            If specified, all joints and links from the (other) mesh will be
-            pre-fixed with this value to avoid name clashes.
-        Returns
-        -------
-        :class:`.URDF`
-            The new URDF.
-        """
-        myself = self.copy()
-        other = other.copy(prefix=prefix)
+    # def join(self, other, link, origin=None, name=None, prefix=''):
+    #     """Join another URDF to this one by rigidly fixturing the two at a link.
+    #     Parameters
+    #     ----------
+    #     other : :class:.`URDF`
+    #         Another URDF to fuze to this one.
+    #     link : :class:`.Link` or str
+    #         The link of this URDF to attach the other URDF to.
+    #     origin : (4,4) float, optional
+    #         The location in this URDF's link frame to attach the base link of
+    #         the other URDF at.
+    #     name : str, optional
+    #         A name for the new URDF.
+    #     prefix : str, optional
+    #         If specified, all joints and links from the (other) mesh will be
+    #         pre-fixed with this value to avoid name clashes.
+    #     Returns
+    #     -------
+    #     :class:`.URDF`
+    #         The new URDF.
+    #     """
+    #     myself = self.copy()
+    #     other = other.copy(prefix=prefix)
 
-        # Validate
-        link_names = set(myself.link_map.keys())
-        other_link_names = set(other.link_map.keys())
-        if len(link_names.intersection(other_link_names)) > 0:
-            raise ValueError('Cannot merge two URDFs with shared link names')
+    #     # Validate
+    #     link_names = set(myself.link_map.keys())
+    #     other_link_names = set(other.link_map.keys())
+    #     if len(link_names.intersection(other_link_names)) > 0:
+    #         raise ValueError('Cannot merge two URDFs with shared link names')
 
-        joint_names = set(myself.joint_map.keys())
-        other_joint_names = set(other.joint_map.keys())
-        if len(joint_names.intersection(other_joint_names)) > 0:
-            raise ValueError('Cannot merge two URDFs with shared joint names')
+    #     joint_names = set(myself.joint_map.keys())
+    #     other_joint_names = set(other.joint_map.keys())
+    #     if len(joint_names.intersection(other_joint_names)) > 0:
+    #         raise ValueError('Cannot merge two URDFs with shared joint names')
 
-        links = myself.links + other.links
-        joints = myself.joints + other.joints
-        transmissions = myself.transmissions + other.transmissions
-        materials = myself.materials + other.materials
+    #     links = myself.links + other.links
+    #     joints = myself.joints + other.joints
+    #     transmissions = myself.transmissions + other.transmissions
+    #     materials = myself.materials + other.materials
 
-        if name is None:
-            name = self.name
+    #     if name is None:
+    #         name = self.name
 
-        # Create joint that links the two rigidly
-        joints.append(Joint(
-            name='{}_join_{}{}_joint'.format(self.name, prefix, other.name),
-            joint_type='fixed',
-            parent=link if isinstance(link, str) else link.name,
-            child=other.base_link.name,
-            origin=origin
-        ))
+    #     # Create joint that links the two rigidly
+    #     joints.append(Joint(
+    #         name='{}_join_{}{}_joint'.format(self.name, prefix, other.name),
+    #         joint_type='fixed',
+    #         parent=link if isinstance(link, str) else link.name,
+    #         child=other.base_link.name,
+    #         origin=origin
+    #     ))
 
-        return URDF(
-            name=name, links=links, joints=joints, transmissions=transmissions,
-            materials=materials)
+    #     return URDF(
+    #         name=name, links=links, joints=joints, transmissions=transmissions,
+    #         materials=materials)
 
     def _merge_materials(self):
         """Merge the top-level material set with the link materials.
@@ -3326,53 +3324,53 @@ class URDF(URDFType):
                     raise ValueError('Transmission {} has invalid joint name '
                                      '{}'.format(t.name, joint.name))
 
-    def _validate_graph(self):
-        """Raise an exception if the link-joint structure is invalid.
-        Checks for the following:
-        - The graph is connected in the undirected sense.
-        - The graph is acyclic in the directed sense.
-        - The graph has only one base link.
-        Returns
-        -------
-        base_link : :class:`.Link`
-            The base link of the URDF.
-        end_links : list of :class:`.Link`
-            The end links of the URDF.
-        """
+    # def _validate_graph(self):
+    #     """Raise an exception if the link-joint structure is invalid.
+    #     Checks for the following:
+    #     - The graph is connected in the undirected sense.
+    #     - The graph is acyclic in the directed sense.
+    #     - The graph has only one base link.
+    #     Returns
+    #     -------
+    #     base_link : :class:`.Link`
+    #         The base link of the URDF.
+    #     end_links : list of :class:`.Link`
+    #         The end links of the URDF.
+    #     """
 
-        # Check that the link graph is weakly connected
-        if not nx.is_weakly_connected(self._G):
-            link_clusters = []
-            for cc in nx.weakly_connected_components(self._G):
-                cluster = []
-                for n in cc:
-                    cluster.append(n.name)
-                link_clusters.append(cluster)
-            message = ('Links are not all connected. '
-                       'Connected components are:')
-            for lc in link_clusters:
-                message += '\n\t'
-                for n in lc:
-                    message += ' {}'.format(n)
-            raise ValueError(message)
+    #     # Check that the link graph is weakly connected
+    #     if not nx.is_weakly_connected(self._G):
+    #         link_clusters = []
+    #         for cc in nx.weakly_connected_components(self._G):
+    #             cluster = []
+    #             for n in cc:
+    #                 cluster.append(n.name)
+    #             link_clusters.append(cluster)
+    #         message = ('Links are not all connected. '
+    #                    'Connected components are:')
+    #         for lc in link_clusters:
+    #             message += '\n\t'
+    #             for n in lc:
+    #                 message += ' {}'.format(n)
+    #         raise ValueError(message)
 
-        # Check that link graph is acyclic
-        if not nx.is_directed_acyclic_graph(self._G):
-            raise ValueError('There are cycles in the link graph')
+    #     # Check that link graph is acyclic
+    #     if not nx.is_directed_acyclic_graph(self._G):
+    #         raise ValueError('There are cycles in the link graph')
 
-        # Ensure that there is exactly one base link, which has no parent
-        base_link = None
-        end_links = []
-        for n in self._G:
-            if len(nx.descendants(self._G, n)) == 0:
-                if base_link is None:
-                    base_link = n
-                else:
-                    raise ValueError('Links {} and {} are both base links!'
-                                     .format(n.name, base_link.name))
-            if len(nx.ancestors(self._G, n)) == 0:
-                end_links.append(n)
-        return base_link, end_links
+    #     # Ensure that there is exactly one base link, which has no parent
+    #     base_link = None
+    #     end_links = []
+    #     for n in self._G:
+    #         if len(nx.descendants(self._G, n)) == 0:
+    #             if base_link is None:
+    #                 base_link = n
+    #             else:
+    #                 raise ValueError('Links {} and {} are both base links!'
+    #                                  .format(n.name, base_link.name))
+    #         if len(nx.ancestors(self._G, n)) == 0:
+    #             end_links.append(n)
+    #     return base_link, end_links
 
     def _process_cfg(self, cfg):
         """Process a joint configuration spec into a dictionary mapping
