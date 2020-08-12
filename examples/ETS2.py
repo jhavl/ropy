@@ -90,3 +90,4 @@ rob = rp.backend.URDF.loadstr(a, f)
 for link in rob.links:
     print(link.name)
     print(link.inertial.origin)
+    
