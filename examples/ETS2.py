@@ -81,12 +81,14 @@ from ropy.backend import xacro
 
 ###########################################
 
-f = 'ropy/models/xarco/panda/robots/panda_arm_hand.urdf.xacro'
-a = xacro.main(f)
-print(a)
+# f = 'ropy/models/xarco/panda/robots/panda_arm_hand.urdf.xacro'
+# a = xacro.main(f)
+# print(a)
 
-rob = rp.backend.URDF.loadstr(a, f)
+# rob = rp.backend.URDF.loadstr(a, f)
 
 # for link in rob.links:
 #     print(link.name)
 #     print(link.inertial.origin)
+
+panda = rp.PandaETree()
