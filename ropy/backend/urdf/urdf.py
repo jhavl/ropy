@@ -2389,37 +2389,108 @@ class URDF(URDFType):
 
         j = self.joints[4]
 
-        for k in range(len(self.joints)):
-            found = False
-            for i in range(len(self.joints)):
-                if self.joints[i].child == j.parent:
-                    j = self.joints[i]
-                    found = True
-                    break  # Found link above j
-            if not found:
-                break  # No link above j was found, we have the base joint
+        # for k in range(len(self.joints)):
+        #     found = False
+        #     for i in range(len(self.joints)):
+        #         if self.joints[i].child == j.parent:
+        #             j = self.joints[i]
+        #             found = True
+        #             break  # Found link above j
+        #     if not found:
+        #         break  # No link above j was found, we have the base joint
 
-        self._base_link = j.parent
-        self._base_joint = j
+        # self._base_link = j.parent
+        # self._base_joint = j
 
-        # js = [j]
+        links = []
 
-        # for i in range(len(self.joints)):
-        #     for j in range(len(js)):
+        for j in self.joints:
 
-        #         link = js[ii].child
+            ets = []
+            T = sm.SE3(j.origin)
+            trans = T.t
+            rot = T.rpy(unit='rad')
 
-        #         for k in range(len(self.joints)):
-        #             if self.joints[i].parent == link:
-        #                 j = self.joints[ii]
+            if trans[0] != 0:
+                ets.append(rp.ET.Ttx(trans[0]))
 
-        #         print(j.name)
+            if trans[1] != 0:
+                ets.append(rp.ET.Tty(trans[1]))
 
+            if trans[2] != 0:
+                ets.append(rp.ET.Ttz(trans[2]))
 
+            if rot[0] != 0:
+                ets.append(rp.ET.TRx(rot[0]))
 
+            if rot[1] != 0:
+                ets.append(rp.ET.TRy(rot[1]))
 
-        # for joint in self.joints:
-        #     print(joint.name)
+            if rot[2] != 0:
+                ets.append(rp.ET.TRz(rot[2]))
+
+            if j.joint_type == 'revolute':
+                if j.axis[0] == 1:
+                    ets.append(rp.ET.TRx())
+                elif j.axis[0] == -1:
+                    ets.append(rp.ET.TRy(np.pi))
+                    ets.append(rp.ET.TRx())
+                elif j.axis[1] == 1:
+                    ets.append(rp.ET.TRy())
+                elif j.axis[1] == -1:
+                    ets.append(rp.ET.TRz(np.pi))
+                    ets.append(rp.ET.TRy())
+                elif j.axis[2] == 1:
+                    ets.append(rp.ET.TRz())
+                elif j.axis[2] == -1:
+                    ets.append(rp.ET.TRx(np.pi))
+                    ets.append(rp.ET.TRz())
+            elif j.joint_type == 'prismatic':
+                if j.axis[0] == 1:
+                    ets.append(rp.ET.Ttx())
+                elif j.axis[0] == -1:
+                    ets.append(rp.ET.TRy(np.pi))
+                    ets.append(rp.ET.Ttx())
+                elif j.axis[1] == 1:
+                    ets.append(rp.ET.Tty())
+                elif j.axis[1] == -1:
+                    ets.append(rp.ET.TRz(np.pi))
+                    ets.append(rp.ET.Tty())
+                elif j.axis[2] == 1:
+                    ets.append(rp.ET.Ttz())
+                elif j.axis[2] == -1:
+                    ets.append(rp.ET.TRx(np.pi))
+                    ets.append(rp.ET.Ttz())
+
+            try:
+                qlim = [j.limit.lower, j.limit.upper]
+            except AttributeError:
+                qlim = [0, 0]
+
+            links.append(
+                rp.ELink(
+                    ets,
+                    name=j.name,
+                    qlim=qlim
+                )
+            )
+        
+        for i in range(len(links)):
+            for j in range(len(links)):
+                if i != j:
+                    if self.joints[i].parent == self.joints[j].child:
+                        links[i]._parent.append(links[j])
+
+        panda = rp.ETS(
+            links,
+            base_link=links[0],
+            ee_link=links[8],
+            name=self.name
+        )
+
+        for link in self.links:
+            print(link.visuals[0].origin)
+
 
 
         # Synchronize materials between links and top-level set
@@ -2428,35 +2499,6 @@ class URDF(URDFType):
         # Validate the joints and transmissions
         # actuated_joints = self._validate_joints()
         self._validate_transmissions()
-
-        # # Create the link graph and base link/end link sets
-        # self._G = nx.DiGraph()
-
-        # # Add all links
-        # for link in self.links:
-        #     self._G.add_node(link)
-
-        # # Add all edges from CHILDREN TO PARENTS, with joints as their object
-        # for joint in self.joints:
-        #     parent = self._link_map[joint.parent]
-        #     child = self._link_map[joint.child]
-        #     self._G.add_edge(child, parent, joint=joint)
-
-        # # Validate the graph and get the base and end links
-        # self._base_link, self._end_links = self._validate_graph()
-
-        # # Cache the paths to the base link
-        # self._paths_to_base = nx.shortest_path(
-        #     self._G, target=self._base_link
-        # )
-
-        # self._actuated_joints = self._sort_joints(actuated_joints)
-
-        # # Cache the reverse topological order (useful for speeding up FK,
-        # # as we want to start at the base and work outward to cache
-        # # computation.
-        # self._reverse_topo = list(
-        #   reversed(list(nx.topological_sort(self._G))))
 
     @property
     def name(self):
@@ -3095,86 +3137,6 @@ class URDF(URDFType):
             materials=[v.copy(prefix, scale) for v in self.materials],
             other_xml=self.other_xml
         )
-
-    # def save(self, file_obj):
-    #     """Save this URDF to a file.
-    #     Parameters
-    #     ----------
-    #     file_obj : str or file-like object
-    #         The file to save the URDF to. Should be the path to the
-    #         ``.urdf`` XML file. Any paths in the URDF should be specified
-    #         as relative paths to the ``.urdf`` file instead of as ROS
-    #         resources.
-    #     Returns
-    #     -------
-    #     urdf : :class:`.URDF`
-    #         The parsed URDF.
-    #     """
-    #     if isinstance(file_obj, str):
-    #         path, _ = os.path.split(file_obj)
-    #     else:
-    #         path, _ = os.path.split(os.path.realpath(file_obj.name))
-
-    #     node = self._to_xml(None, path)
-    #     tree = ET.ElementTree(node)
-    #     tree.write(file_obj, pretty_print=True,
-    #                xml_declaration=True, encoding='utf-8')
-
-    # def join(self, other, link, origin=None, name=None, prefix=''):
-    #     """Join another URDF to this one by rigidly fixturing the two at a link.
-    #     Parameters
-    #     ----------
-    #     other : :class:.`URDF`
-    #         Another URDF to fuze to this one.
-    #     link : :class:`.Link` or str
-    #         The link of this URDF to attach the other URDF to.
-    #     origin : (4,4) float, optional
-    #         The location in this URDF's link frame to attach the base link of
-    #         the other URDF at.
-    #     name : str, optional
-    #         A name for the new URDF.
-    #     prefix : str, optional
-    #         If specified, all joints and links from the (other) mesh will be
-    #         pre-fixed with this value to avoid name clashes.
-    #     Returns
-    #     -------
-    #     :class:`.URDF`
-    #         The new URDF.
-    #     """
-    #     myself = self.copy()
-    #     other = other.copy(prefix=prefix)
-
-    #     # Validate
-    #     link_names = set(myself.link_map.keys())
-    #     other_link_names = set(other.link_map.keys())
-    #     if len(link_names.intersection(other_link_names)) > 0:
-    #         raise ValueError('Cannot merge two URDFs with shared link names')
-
-    #     joint_names = set(myself.joint_map.keys())
-    #     other_joint_names = set(other.joint_map.keys())
-    #     if len(joint_names.intersection(other_joint_names)) > 0:
-    #         raise ValueError('Cannot merge two URDFs with shared joint names')
-
-    #     links = myself.links + other.links
-    #     joints = myself.joints + other.joints
-    #     transmissions = myself.transmissions + other.transmissions
-    #     materials = myself.materials + other.materials
-
-    #     if name is None:
-    #         name = self.name
-
-    #     # Create joint that links the two rigidly
-    #     joints.append(Joint(
-    #         name='{}_join_{}{}_joint'.format(self.name, prefix, other.name),
-    #         joint_type='fixed',
-    #         parent=link if isinstance(link, str) else link.name,
-    #         child=other.base_link.name,
-    #         origin=origin
-    #     ))
-
-    #     return URDF(
-    #         name=name, links=links, joints=joints, transmissions=transmissions,
-    #         materials=materials)
 
     def _merge_materials(self):
         """Merge the top-level material set with the link materials.

@@ -5,6 +5,7 @@
 
 import ropy as rp
 from ropy.backend import xacro
+
 # from ropy.backend import urdf
 
 # import spatialmath as sm
@@ -16,6 +17,7 @@ from ropy.backend import xacro
 # env.launch('Panda Resolved-Rate Motion Control Example', limits=[-0.75, 0.75, -0.75, 0.75, 0, 1.5])
 
 # gPanda = rp.Panda()
+# print(gPanda.fkine())
 # gPanda.name = "Null"
 # gPanda.q = gPanda.qr
 
@@ -96,7 +98,8 @@ from ropy.backend import xacro
 
 ###########################################
 
-# f = 'ropy/models/xarco/panda/robots/panda_arm_hand.urdf.xacro'
+# f = 'ro
+# py/models/xarco/panda/robots/panda_arm_hand.urdf.xacro'
 # a = xacro.main(f)
 # print(a)
 
@@ -106,4 +109,11 @@ from ropy.backend import xacro
 #     print(link.name)
 #     print(link.inertial.origin)
 
-panda = rp.Panda()
+# panda = rp.Panda()
+
+sim = rp.backend.Sim()
+# sim.launch()
+
+
+while(1):
+    pass
