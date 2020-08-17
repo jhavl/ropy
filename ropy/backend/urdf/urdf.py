@@ -813,7 +813,7 @@ class Visual(URDFType):
         self.geometry = geometry
         self.name = name
         self.origin = origin
-        self.material = material
+        # self.material = material
 
     @property
     def geometry(self):
@@ -888,9 +888,9 @@ class Visual(URDFType):
             geometry=self.geometry.copy(prefix=prefix, scale=scale),
             name='{}{}'.format(prefix, self.name),
             origin=origin,
-            material=(
-                self.material.copy(prefix=prefix)
-                if self.material else None),
+            # material=(
+            #     self.material.copy(prefix=prefix)
+            #     if self.material else None),
         )
 
 
@@ -2252,13 +2252,15 @@ class URDF(URDFType):
     _TAG = 'robot'
 
     def __init__(self, name, links, joints=None,
-                 transmissions=None, materials=None, other_xml=None):
+                 transmissions=None,
+                #  materials=None,
+                 other_xml=None):
         if joints is None:
             joints = []
         if transmissions is None:
             transmissions = []
-        if materials is None:
-            materials = []
+        # if materials is None:
+        #     materials = []
 
         self.name = name
         self.other_xml = other_xml
@@ -2267,13 +2269,13 @@ class URDF(URDFType):
         self._links = list(links)
         self._joints = list(joints)
         self._transmissions = list(transmissions)
-        self._materials = list(materials)
+        # self._materials = list(materials)
 
         # Set up private helper maps from name to value
         self._link_map = {}
         self._joint_map = {}
         self._transmission_map = {}
-        self._material_map = {}
+        # self._material_map = {}
 
         for x in self._links:
             if x.name in self._link_map:
@@ -2293,11 +2295,11 @@ class URDF(URDFType):
                                  'found'.format(x.name))
             self._transmission_map[x.name] = x
 
-        for x in self._materials:
-            if x.name in self._material_map:
-                raise ValueError('Two materials with name {} '
-                                 'found'.format(x.name))
-            self._material_map[x.name] = x
+        # for x in self._materials:
+        #     if x.name in self._material_map:
+        #         raise ValueError('Two materials with name {} '
+        #                          'found'.format(x.name))
+        #     self._material_map[x.name] = x
 
         elinks = []
 
@@ -2396,7 +2398,7 @@ class URDF(URDFType):
         #         print(vis.geometry.mesh.filename)
 
         # Synchronize materials between links and top-level set
-        self._merge_materials()
+        # self._merge_materials()
 
         # Validate the joints and transmissions
         # actuated_joints = self._validate_joints()
@@ -2466,23 +2468,23 @@ class URDF(URDFType):
         """
         return copy.copy(self._transmission_map)
 
-    @property
-    def materials(self):
-        """list of :class:`.Material` : The materials of the URDF.
-        This returns a copy of the materials array which cannot be edited
-        directly. If you want to add or remove materials, use
-        the appropriate functions.
-        """
-        return copy.copy(self._materials)
+    # @property
+    # def materials(self):
+    #     """list of :class:`.Material` : The materials of the URDF.
+    #     This returns a copy of the materials array which cannot be edited
+    #     directly. If you want to add or remove materials, use
+    #     the appropriate functions.
+    #     """
+    #     return copy.copy(self._materials)
 
-    @property
-    def material_map(self):
-        """dict : Map from material names to the materials themselves.
-        This returns a copy of the material map which cannot be edited
-        directly. If you want to add or remove materials, use
-        the appropriate functions.
-        """
-        return copy.copy(self._material_map)
+    # @property
+    # def material_map(self):
+    #     """dict : Map from material names to the materials themselves.
+    #     This returns a copy of the material map which cannot be edited
+    #     directly. If you want to add or remove materials, use
+    #     the appropriate functions.
+    #     """
+    #     return copy.copy(self._material_map)
 
     @property
     def other_xml(self):
@@ -2503,18 +2505,18 @@ class URDF(URDFType):
         """
         return self._actuated_joints
 
-    def _merge_materials(self):
-        """Merge the top-level material set with the link materials.
-        """
-        for link in self.links:
-            for v in link.visuals:
-                if v.material is None:
-                    continue
-                if v.material.name in self.material_map:
-                    v.material = self._material_map[v.material.name]
-                else:
-                    self._materials.append(v.material)
-                    self._material_map[v.material.name] = v.material
+    # def _merge_materials(self):
+    #     """Merge the top-level material set with the link materials.
+    #     """
+    #     for link in self.links:
+    #         for v in link.visuals:
+    #             if v.material is None:
+    #                 continue
+    #             if v.material.name in self.material_map:
+    #                 v.material = self._material_map[v.material.name]
+    #             else:
+    #                 self._materials.append(v.material)
+    #                 self._material_map[v.material.name] = v.material
 
     @staticmethod
     def load(file_obj):
@@ -2697,7 +2699,10 @@ class URDF(URDFType):
 
     @classmethod
     def _from_xml(cls, node, path):
-        valid_tags = set(['joint', 'link', 'transmission', 'material'])
+        valid_tags = set([
+            'joint', 'link', 'transmission',
+            #  'material'
+            ])
         kwargs = cls._parse(node, path)
 
         extra_xml_node = ET.Element('extra')

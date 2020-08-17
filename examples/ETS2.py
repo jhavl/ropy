@@ -4,7 +4,7 @@
 """
 
 import ropy as rp
-from ropy.backend import xacro
+# from ropy.backend import xacro
 
 # from ropy.backend import urdf
 
@@ -98,12 +98,12 @@ from ropy.backend import xacro
 
 ###########################################
 
-# f = 'ro
-# py/models/xarco/panda/robots/panda_arm_hand.urdf.xacro'
-# a = xacro.main(f)
-# print(a)
+panda = rp.PandaURDF()
+# print(panda.fkine(panda.qz))
 
-# rob = rp.backend.URDF.loadstr(a, f)
+# for l in panda.ets:
+    # for gi in l.geometry:
+        # print(gi.filename)
 
 # for link in rob.links:
 #     print(link.name)
@@ -112,8 +112,10 @@ from ropy.backend import xacro
 # panda = rp.Panda()
 
 sim = rp.backend.Sim()
+sim.launch()
+sim.add(panda)
 # sim.launch()
 
 
-while(1):
-    pass
+# while(1):
+#     pass
