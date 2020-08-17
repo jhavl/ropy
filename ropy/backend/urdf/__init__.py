@@ -1,7 +1,6 @@
  
 from .urdf import (URDFType,
                    Box, Cylinder, Sphere, Mesh, Geometry,
-                   Texture, Material,
                    Collision, Visual, Inertial,
                    JointCalibration, JointDynamics, JointLimit, JointMimic,
                    SafetyController, Actuator, TransmissionJoint,
@@ -11,7 +10,7 @@ from .utils import (rpy_to_matrix, matrix_to_rpy, xyz_rpy_to_matrix,
 
 __all__ = [
     'URDFType', 'Box', 'Cylinder', 'Sphere', 'Mesh', 'Geometry',
-    'Texture', 'Material', 'Collision', 'Visual', 'Inertial',
+    'Collision', 'Visual', 'Inertial',
     'JointCalibration', 'JointDynamics', 'JointLimit', 'JointMimic',
     'SafetyController', 'Actuator', 'TransmissionJoint',
     'Transmission', 'Joint', 'Link', 'URDF',
