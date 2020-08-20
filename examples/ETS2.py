@@ -184,11 +184,13 @@ for i in range(tests):
             pQuad.qd = np.zeros(n)
 
         if not arrivedp and not failp:
-            # null = (np.linalg.pinv(pProj.jacobe()) @ pProj.jacobe()) @ pProj.jacobm()
             null = (
-                rp.null(pProj.jacobe()) @
-                np.linalg.pinv(rp.null(pProj.jacobe())) @
-                pProj.jacobm())
+                    np.eye(9) - np.linalg.pinv(pProj.jacobe()) @ pProj.jacobe()
+                ) @ pProj.jacobm()
+            # null = (
+                # rp.null(pProj.jacobe()) @
+                # np.linalg.pinv(rp.null(pProj.jacobe())) @
+                # pProj.jacobm())
 
             vp, arrivedp = rp.p_servo(pProj.fkine(), Tp, 1, threshold=0.1)
             pProj.qd = (np.linalg.pinv(pProj.jacobe()) @ vp) + 100 * null.flatten()
