@@ -533,7 +533,7 @@ class Visual(URDFType):
 
     @geometry.setter
     def geometry(self, value):
-        if not isinstance(value, Geometry):   #pragma nocover
+        if not isinstance(value, Geometry):   # pragma nocover
             raise TypeError('Must set geometry with Geometry object')
         self._geometry = value
 
@@ -604,7 +604,7 @@ class Inertial(URDFType):
     @inertia.setter
     def inertia(self, value):
         value = np.asanyarray(value).astype(np.float64)
-        if not np.allclose(value, value.T):  #pragma nocover
+        if not np.allclose(value, value.T):  # pragma nocover
             raise ValueError('Inertia must be a symmetric matrix')
         self._inertia = value
 
@@ -642,7 +642,7 @@ class Inertial(URDFType):
 ###############################################################################
 
 
-class JointCalibration(URDFType):  #pragma nocover
+class JointCalibration(URDFType):  # pragma nocover
     """The reference positions of the joint.
     Parameters
     ----------
@@ -749,22 +749,6 @@ class JointDynamics(URDFType):
             value = float(value)
         self._friction = value
 
-    def copy(self, prefix='', scale=None):
-        """Create a deep copy of the visual with the prefix applied to all names.
-        Parameters
-        ----------
-        prefix : str
-            A prefix to apply to all joint and link names.
-        Returns
-        -------
-        :class:`.JointDynamics`
-            A deep copy of the visual.
-        """
-        return JointDynamics(
-            damping=self.damping,
-            friction=self.friction,
-        )
-
 
 class JointLimit(URDFType):
     """The limits of the joint.
@@ -839,26 +823,8 @@ class JointLimit(URDFType):
             value = float(value)
         self._upper = value
 
-    def copy(self, prefix='', scale=None):
-        """Create a deep copy of the visual with the prefix applied to all names.
-        Parameters
-        ----------
-        prefix : str
-            A prefix to apply to all joint and link names.
-        Returns
-        -------
-        :class:`.JointLimit`
-            A deep copy of the visual.
-        """
-        return JointLimit(
-            effort=self.effort,
-            velocity=self.velocity,
-            lower=self.lower,
-            upper=self.upper,
-        )
 
-
-class JointMimic(URDFType):
+class JointMimic(URDFType):  # pragma nocover
     """A mimicry tag for a joint, which forces its configuration to
     mimic another joint's.
     This joint's configuration value is set equal to
@@ -922,25 +888,8 @@ class JointMimic(URDFType):
             value = 0.0
         self._offset = value
 
-    def copy(self, prefix='', scale=None):
-        """Create a deep copy of the joint mimic with the prefix applied to all names.
-        Parameters
-        ----------
-        prefix : str
-            A prefix to apply to all joint and link names.
-        Returns
-        -------
-        :class:`.JointMimic`
-            A deep copy of the joint mimic.
-        """
-        return JointMimic(
-            joint='{}{}'.format(prefix, self.joint),
-            multiplier=self.multiplier,
-            offset=self.offset
-        )
 
-
-class SafetyController(URDFType):
+class SafetyController(URDFType):  # pragma nocover
     """A controller for joint movement safety.
     Parameters
     ----------
@@ -1024,24 +973,6 @@ class SafetyController(URDFType):
     def k_velocity(self, value):
         self._k_velocity = float(value)
 
-    def copy(self, prefix='', scale=None):
-        """Create a deep copy of the visual with the prefix applied to all names.
-        Parameters
-        ----------
-        prefix : str
-            A prefix to apply to all joint and link names.
-        Returns
-        -------
-        :class:`.SafetyController`
-            A deep copy of the visual.
-        """
-        return SafetyController(
-            k_velocity=self.k_velocity,
-            k_position=self.k_position,
-            soft_lower_limit=self.soft_lower_limit,
-            soft_upper_limit=self.soft_upper_limit,
-        )
-
 
 ###############################################################################
 # Transmission types
@@ -1072,7 +1003,7 @@ class Actuator(URDFType):
         self.hardwareInterfaces = hardwareInterfaces
 
     @property
-    def name(self):
+    def name(self):  # pragma nocover
         """str : The name of this actuator.
         """
         return self._name
@@ -1094,13 +1025,13 @@ class Actuator(URDFType):
         self._mechanicalReduction = value
 
     @property
-    def hardwareInterfaces(self):
+    def hardwareInterfaces(self):   # pragma nocover
         """list of str : The supported hardware interfaces.
         """
         return self._hardwareInterfaces
 
     @hardwareInterfaces.setter
-    def hardwareInterfaces(self, value):
+    def hardwareInterfaces(self, value):   # pragma nocover
         if value is None:
             value = []
         else:
@@ -1110,7 +1041,7 @@ class Actuator(URDFType):
         self._hardwareInterfaces = value
 
     @classmethod
-    def _from_xml(cls, node, path):
+    def _from_xml(cls, node, path):   # pragma nocover
         kwargs = cls._parse(node, path)
         mr = node.find('mechanicalReduction')
         if mr is not None:
@@ -1121,23 +1052,6 @@ class Actuator(URDFType):
             hi = [h.text for h in hi]
         kwargs['hardwareInterfaces'] = hi
         return Actuator(**kwargs)
-
-    def copy(self, prefix='', scale=None):
-        """Create a deep copy of the visual with the prefix applied to all names.
-        Parameters
-        ----------
-        prefix : str
-            A prefix to apply to all joint and link names.
-        Returns
-        -------
-        :class:`.Actuator`
-            A deep copy of the visual.
-        """
-        return Actuator(
-            name='{}{}'.format(prefix, self.name),
-            mechanicalReduction=self.mechanicalReduction,
-            hardwareInterfaces=self.hardwareInterfaces.copy(),
-        )
 
 
 class TransmissionJoint(URDFType):
@@ -1169,13 +1083,13 @@ class TransmissionJoint(URDFType):
         self._name = str(value)
 
     @property
-    def hardwareInterfaces(self):
+    def hardwareInterfaces(self):   # pragma nocover
         """list of str : The supported hardware interfaces.
         """
         return self._hardwareInterfaces
 
     @hardwareInterfaces.setter
-    def hardwareInterfaces(self, value):
+    def hardwareInterfaces(self, value):   # pragma nocover
         if value is None:
             value = []
         else:
@@ -1192,22 +1106,6 @@ class TransmissionJoint(URDFType):
             hi = [h.text for h in hi]
         kwargs['hardwareInterfaces'] = hi
         return TransmissionJoint(**kwargs)
-
-    def copy(self, prefix='', scale=None):
-        """Create a deep copy with the prefix applied to all names.
-        Parameters
-        ----------
-        prefix : str
-            A prefix to apply to all names.
-        Returns
-        -------
-        :class:`.TransmissionJoint`
-            A deep copy.
-        """
-        return TransmissionJoint(
-            name='{}{}'.format(prefix, self.name),
-            hardwareInterfaces=self.hardwareInterfaces.copy(),
-        )
 
 
 ###############################################################################
@@ -1255,7 +1153,7 @@ class Transmission(URDFType):
         self._name = str(value)
 
     @property
-    def trans_type(self):
+    def trans_type(self):   # pragma nocover
         """str : The type of this transmission.
         """
         return self._trans_type
@@ -1272,7 +1170,7 @@ class Transmission(URDFType):
         return self._joints
 
     @joints.setter
-    def joints(self, value):
+    def joints(self, value):   # pragma nocover
         if value is None:
             value = []
         else:
@@ -1291,7 +1189,7 @@ class Transmission(URDFType):
         return self._actuators
 
     @actuators.setter
-    def actuators(self, value):
+    def actuators(self, value):   # pragma nocover
         if value is None:
             value = []
         else:
@@ -1308,24 +1206,6 @@ class Transmission(URDFType):
         kwargs = cls._parse(node, path)
         kwargs['trans_type'] = node.find('type').text
         return Transmission(**kwargs)
-
-    def copy(self, prefix='', scale=None):
-        """Create a deep copy with the prefix applied to all names.
-        Parameters
-        ----------
-        prefix : str
-            A prefix to apply to all names.
-        Returns
-        -------
-        :class:`.Transmission`
-            A deep copy.
-        """
-        return Transmission(
-            name='{}{}'.format(prefix, self.name),
-            trans_type=self.trans_type,
-            joints=[j.copy(prefix) for j in self.joints],
-            actuators=[a.copy(prefix) for a in self.actuators],
-        )
 
 
 class Joint(URDFType):
@@ -1417,7 +1297,7 @@ class Joint(URDFType):
     @joint_type.setter
     def joint_type(self, value):
         value = str(value)
-        if value not in Joint.TYPES:
+        if value not in Joint.TYPES:   # pragma nocover
             raise ValueError('Unsupported joint type {}'.format(value))
         self._joint_type = value
 
@@ -1453,7 +1333,7 @@ class Joint(URDFType):
             value = np.array([1.0, 0.0, 0.0], dtype=np.float64)
         else:
             value = np.asanyarray(value, dtype=np.float64)
-            if value.shape != (3,):
+            if value.shape != (3,):    # pragma nocover
                 raise ValueError('Invalid shape for axis, should be (3,)')
             value = value / np.linalg.norm(value)
         self._axis = value
@@ -1478,10 +1358,10 @@ class Joint(URDFType):
     @limit.setter
     def limit(self, value):
         if value is None:
-            if self.joint_type in ['prismatic', 'revolute']:
+            if self.joint_type in ['prismatic', 'revolute']:   # pragma nocover
                 raise ValueError('Require joint limit for prismatic and '
                                  'revolute joints')
-        elif not isinstance(value, JointLimit):
+        elif not isinstance(value, JointLimit):   # pragma nocover
             raise TypeError('Expected JointLimit type')
         self._limit = value
 
@@ -1494,12 +1374,12 @@ class Joint(URDFType):
     @dynamics.setter
     def dynamics(self, value):
         if value is not None:
-            if not isinstance(value, JointDynamics):
+            if not isinstance(value, JointDynamics):   # pragma nocover
                 raise TypeError('Expected JointDynamics type')
         self._dynamics = value
 
     @property
-    def safety_controller(self):
+    def safety_controller(self):   # pragma nocover
         """:class:`.SafetyController` : The safety controller for this joint.
         """
         return self._safety_controller
@@ -1507,12 +1387,12 @@ class Joint(URDFType):
     @safety_controller.setter
     def safety_controller(self, value):
         if value is not None:
-            if not isinstance(value, SafetyController):
+            if not isinstance(value, SafetyController):   # pragma nocover
                 raise TypeError('Expected SafetyController type')
         self._safety_controller = value
 
     @property
-    def calibration(self):
+    def calibration(self):   # pragma nocover
         """:class:`.JointCalibration` : The calibration for this joint.
         """
         return self._calibration
@@ -1520,12 +1400,12 @@ class Joint(URDFType):
     @calibration.setter
     def calibration(self, value):
         if value is not None:
-            if not isinstance(value, JointCalibration):
+            if not isinstance(value, JointCalibration):   # pragma nocover
                 raise TypeError('Expected JointCalibration type')
         self._calibration = value
 
     @property
-    def mimic(self):
+    def mimic(self):   # pragma nocover
         """:class:`.JointMimic` : The mimic for this joint.
         """
         return self._mimic
@@ -1533,11 +1413,11 @@ class Joint(URDFType):
     @mimic.setter
     def mimic(self, value):
         if value is not None:
-            if not isinstance(value, JointMimic):
+            if not isinstance(value, JointMimic):   # pragma nocover
                 raise TypeError('Expected JointMimic type')
         self._mimic = value
 
-    def is_valid(self, cfg):
+    def is_valid(self, cfg):    # pragma nocover
         """Check if the provided configuration value is valid for this joint.
         Parameters
         ----------
@@ -1561,113 +1441,6 @@ class Joint(URDFType):
             upper = self.limit.upper
         return (cfg >= lower and cfg <= upper)
 
-    def get_child_pose(self, cfg=None):
-        """Computes the child pose relative to a parent pose for a given
-        configuration value.
-        Parameters
-        ----------
-        cfg : float, (2,) float, (6,) float, or (4,4) float
-            The configuration values for this joint. They are interpreted
-            based on the joint type as follows:
-            - ``fixed`` - not used.
-            - ``prismatic`` - a translation along the axis in meters.
-            - ``revolute`` - a rotation about the axis in radians.
-            - ``continuous`` - a rotation about the axis in radians.
-            - ``planar`` - the x and y translation values in the plane.
-            - ``floating`` - the xyz values followed by the rpy values,
-              or a (4,4) matrix.
-            If ``cfg`` is ``None``, then this just returns the joint pose.
-        Returns
-        -------
-        pose : (4,4) float
-            The pose of the child relative to the parent.
-        """
-        if cfg is None:
-            return self.origin
-        elif self.joint_type == 'fixed':
-            return self.origin
-        elif self.joint_type in ['revolute', 'continuous']:
-            if cfg is None:
-                cfg = 0.0
-            else:
-                cfg = float(cfg)
-            R = sm.SE3().A
-            # TODO fis this
-            # R = trimesh.transformations.rotation_matrix(cfg, self.axis)
-            return self.origin.dot(R)
-        elif self.joint_type == 'prismatic':
-            if cfg is None:
-                cfg = 0.0
-            else:
-                cfg = float(cfg)
-            translation = np.eye(4, dtype=np.float64)
-            translation[:3, 3] = self.axis * cfg
-            return self.origin.dot(translation)
-        elif self.joint_type == 'planar':
-            if cfg is None:
-                cfg = np.zeros(2, dtype=np.float64)
-            else:
-                cfg = np.asanyarray(cfg, dtype=np.float64)
-            if cfg.shape != (2,):
-                raise ValueError(
-                    '(2,) float configuration required for planar joints'
-                )
-            translation = np.eye(4, dtype=np.float64)
-            translation[:3, 3] = self.origin[:3, :2].dot(cfg)
-            return self.origin.dot(translation)
-        elif self.joint_type == 'floating':
-            if cfg is None:
-                cfg = np.zeros(6, dtype=np.float64)
-            else:
-                cfg = configure_origin(cfg)
-            if cfg is None:
-                raise ValueError('Invalid configuration for floating joint')
-            return self.origin.dot(cfg)
-        else:
-            raise ValueError('Invalid configuration')
-
-    def get_child_poses(self, cfg, n_cfgs):
-        """
-        Computes the child pose relative to a parent pose for a
-        given set of configuration values.
-        Parameters
-        ----------
-        cfg : (n,) float or None
-            The configuration values for this joint. They are interpreted
-            based on the joint type as follows:
-            - ``fixed`` - not used.
-            - ``prismatic`` - a translation along the axis in meters.
-            - ``revolute`` - a rotation about the axis in radians.
-            - ``continuous`` - a rotation about the axis in radians.
-            - ``planar`` - Not implemented.
-            - ``floating`` - Not implemented.
-            If ``cfg`` is ``None``, then this just returns the joint pose.
-        Returns
-        -------
-        poses : (n,4,4) float
-            The poses of the child relative to the parent.
-        """
-        if cfg is None:
-            return np.tile(self.origin, (n_cfgs, 1, 1))
-        elif self.joint_type == 'fixed':
-            return np.tile(self.origin, (n_cfgs, 1, 1))
-        elif self.joint_type in ['revolute', 'continuous']:
-            if cfg is None:
-                cfg = np.zeros(n_cfgs)
-            return np.matmul(
-                self.origin, self._rotation_matrices(cfg, self.axis))
-        elif self.joint_type == 'prismatic':
-            if cfg is None:
-                cfg = np.zeros(n_cfgs)
-            translation = np.tile(np.eye(4), (n_cfgs, 1, 1))
-            translation[:, :3, 3] = self.axis * cfg[:, np.newaxis]
-            return np.matmul(self.origin, translation)
-        elif self.joint_type == 'planar':
-            raise NotImplementedError()
-        elif self.joint_type == 'floating':
-            raise NotImplementedError()
-        else:
-            raise ValueError('Invalid configuration')
 
     @classmethod
     def _from_xml(cls, node, path):
@@ -1681,76 +1454,6 @@ class Joint(URDFType):
         kwargs['axis'] = axis
         kwargs['origin'] = parse_origin(node)
         return Joint(**kwargs)
-
-    def _rotation_matrices(self, angles, axis):
-        """Compute rotation matrices from angle/axis representations.
-        Parameters
-        ----------
-        angles : (n,) float
-            The angles.
-        axis : (3,) float
-            The axis.
-        Returns
-        -------
-        rots : (n,4,4)
-            The rotation matrices
-        """
-        axis = axis / np.linalg.norm(axis)
-        sina = np.sin(angles)
-        cosa = np.cos(angles)
-        M = np.tile(np.eye(4), (len(angles), 1, 1))
-        M[:, 0, 0] = cosa
-        M[:, 1, 1] = cosa
-        M[:, 2, 2] = cosa
-        M[:, :3, :3] += (
-            np.tile(np.outer(axis, axis), (len(angles), 1, 1)) *
-            (1.0 - cosa)[:, np.newaxis, np.newaxis]
-        )
-        M[:, :3, :3] += np.tile(np.array([
-            [0.0, -axis[2], axis[1]],
-            [axis[2], 0.0, -axis[0]],
-            [-axis[1], axis[0], 0.0]]
-        ), (len(angles), 1, 1)) * sina[:, np.newaxis, np.newaxis]
-        return M
-
-    def copy(self, prefix='', scale=None):
-        """Create a deep copy of the joint with the prefix applied to all names.
-        Parameters
-        ----------
-        prefix : str
-            A prefix to apply to all joint and link names.
-        Returns
-        -------
-        :class:`.Joint`
-            A deep copy of the joint.
-        """
-        origin = self.origin.copy()
-        if scale is not None:
-            if not isinstance(scale, (list, np.ndarray)):
-                scale = np.repeat(scale, 3)
-            origin[:3, 3] *= scale
-        cpy = Joint(
-            name='{}{}'.format(prefix, self.name),
-            joint_type=self.joint_type,
-            parent='{}{}'.format(prefix, self.parent),
-            child='{}{}'.format(prefix, self.child),
-            axis=self.axis.copy(),
-            origin=origin,
-            limit=(self.limit.copy(prefix, scale) if self.limit else None),
-            dynamics=(
-                self.dynamics.copy(prefix, scale)
-                if self.dynamics else None),
-            safety_controller=(
-                self.safety_controller.copy(prefix, scale)
-                if self.safety_controller else None),
-            calibration=(
-                self.calibration.copy(prefix, scale)
-                if self.calibration else None),
-            mimic=(
-                self.mimic.copy(prefix=prefix, scale=scale)
-                if self.mimic else None)
-        )
-        return cpy
 
 
 class Link(URDFType):
@@ -1802,7 +1505,7 @@ class Link(URDFType):
     @inertial.setter
     def inertial(self, value):
         if value is not None and not isinstance(value, Inertial):
-            raise TypeError('Expected Inertial object')
+            raise TypeError('Expected Inertial object')   # pragma nocover
         # Set default inertial
         if value is None:
             value = Inertial(mass=1.0, inertia=np.eye(3))
@@ -1816,12 +1519,12 @@ class Link(URDFType):
 
     @visuals.setter
     def visuals(self, value):
-        if value is None:
+        if value is None:   # pragma nocover
             value = []
         else:
             value = list(value)
             for v in value:
-                if not isinstance(v, Visual):
+                if not isinstance(v, Visual):    # pragma nocover
                     raise ValueError('Expected list of Visual objects')
         self._visuals = value
 
@@ -1833,41 +1536,14 @@ class Link(URDFType):
 
     @collisions.setter
     def collisions(self, value):
-        if value is None:
+        if value is None:    # pragma nocover
             value = []
         else:
             value = list(value)
             for v in value:
-                if not isinstance(v, Collision):
+                if not isinstance(v, Collision):    # pragma nocover
                     raise ValueError('Expected list of Collision objects')
         self._collisions = value
-
-    def copy(self, prefix='', scale=None, collision_only=False):
-        """Create a deep copy of the link.
-        Parameters
-        ----------
-        prefix : str
-            A prefix to apply to all joint and link names.
-        Returns
-        -------
-        link : :class:`.Link`
-            A deep copy of the Link.
-        """
-        inertial = self.inertial.copy() if self.inertial is not None else None
-
-        visuals = None
-        if not collision_only:
-            visuals = [
-                v.copy(prefix=prefix, scale=scale) for v in self.visuals]
-
-        cpy = Link(
-            name='{}{}'.format(prefix, self.name),
-            inertial=inertial,
-            visuals=visuals,
-            collisions=[
-                v.copy(prefix=prefix, scale=scale) for v in self.collisions],
-        )
-        return cpy
 
 
 class URDF(URDFType):
@@ -1903,9 +1579,9 @@ class URDF(URDFType):
     def __init__(self, name, links, joints=None,
                  transmissions=None,
                  other_xml=None):
-        if joints is None:
+        if joints is None:   # pragma nocover
             joints = []
-        if transmissions is None:
+        if transmissions is None:   # pragma nocover
             transmissions = []
         # if materials is None:
         #     materials = []
@@ -1926,19 +1602,19 @@ class URDF(URDFType):
         # self._material_map = {}
 
         for x in self._links:
-            if x.name in self._link_map:
+            if x.name in self._link_map:   # pragma nocover
                 raise ValueError(
                   'Two links with name {} found'.format(x.name))
             self._link_map[x.name] = x
 
         for x in self._joints:
-            if x.name in self._joint_map:
+            if x.name in self._joint_map:   # pragma nocover
                 raise ValueError('Two joints with name {} '
                                  'found'.format(x.name))
             self._joint_map[x.name] = x
 
         for x in self._transmissions:
-            if x.name in self._transmission_map:
+            if x.name in self._transmission_map:   # pragma nocover
                 raise ValueError('Two transmissions with name {} '
                                  'found'.format(x.name))
             self._transmission_map[x.name] = x
@@ -1971,7 +1647,7 @@ class URDF(URDFType):
             if rot[2] != 0:
                 ets.append(rp.ET.TRz(rot[2]))
 
-            if j.joint_type == 'revolute':
+            if j.joint_type == 'revolute':   # pragma nocover
                 if j.axis[0] == 1:
                     ets.append(rp.ET.TRx())
                 elif j.axis[0] == -1:
@@ -1987,7 +1663,7 @@ class URDF(URDFType):
                 elif j.axis[2] == -1:
                     ets.append(rp.ET.TRx(np.pi))
                     ets.append(rp.ET.TRz())
-            elif j.joint_type == 'prismatic':
+            elif j.joint_type == 'prismatic':   # pragma nocover
                 if j.axis[0] == 1:
                     ets.append(rp.ET.Ttx())
                 elif j.axis[0] == -1:
@@ -2035,7 +1711,7 @@ class URDF(URDFType):
                 try:
                     for visual in link.visuals:
                         base_link.geometry.append(visual.geometry.ob)
-                except AttributeError:
+                except AttributeError:   # pragma nocover
                     pass
 
         elinks.append(base_link)
@@ -2059,7 +1735,7 @@ class URDF(URDFType):
             try:
                 for visual in link.visuals:
                     elinks[i].geometry.append(visual.geometry.ob)
-            except AttributeError:
+            except AttributeError:   # pragma nocover
                 pass
 
             try:
@@ -2067,7 +1743,7 @@ class URDF(URDFType):
                 for col in link.collisions:
                     colls.append(col.geometry.ob)
                 elinks[i].collision = colls
-            except AttributeError:
+            except AttributeError:   # pragma nocover
                 pass
 
         # Apply gear ratio
@@ -2096,7 +1772,7 @@ class URDF(URDFType):
         return copy.copy(self._links)
 
     @property
-    def link_map(self):
+    def link_map(self):   # pragma nocover
         """dict : Map from link names to the links themselves.
         This returns a copy of the link map which cannot be edited
         directly. If you want to add or remove links, use
@@ -2132,7 +1808,7 @@ class URDF(URDFType):
         return copy.copy(self._transmissions)
 
     @property
-    def transmission_map(self):
+    def transmission_map(self):   # pragma nocover
         """dict : Map from transmission names to the transmissions themselves.
         This returns a copy of the transmission map which cannot be edited
         directly. If you want to add or remove transmissions, use
@@ -2141,7 +1817,7 @@ class URDF(URDFType):
         return copy.copy(self._transmission_map)
 
     @property
-    def other_xml(self):
+    def other_xml(self):   # pragma nocover
         """str : Any extra XML that belongs with the URDF.
         """
         return self._other_xml
@@ -2151,7 +1827,7 @@ class URDF(URDFType):
         self._other_xml = value
 
     @property
-    def actuated_joints(self):
+    def actuated_joints(self):   # pragma nocover
         """list of :class:`.Joint` : The joints that are independently
         actuated.
         This excludes mimic joints and fixed joints. The joints are listed
@@ -2179,9 +1855,9 @@ class URDF(URDFType):
                 parser = ET.XMLParser()
                 tree = ET.parse(file_obj, parser=parser)
                 path, _ = os.path.split(file_obj)
-            else:
+            else:   # pragma nocover
                 raise ValueError('{} is not a file'.format(file_obj))
-        else:
+        else:   # pragma nocover
             parser = ET.XMLParser()
             tree = ET.parse(file_obj, parser=parser)
             path, _ = os.path.split(file_obj.name)
@@ -2211,52 +1887,13 @@ class URDF(URDFType):
                 tree = ET.parse(bytes_obj, parser=parser)
                 path, _ = os.path.split(file_obj)
 
-        else:
+        else:   # pragma nocover
             parser = ET.XMLParser(remove_comments=True, remove_blank_text=True)
             tree = ET.parse(file_obj, parser=parser)
             path, _ = os.path.split(file_obj.name)
 
         node = tree.getroot()
         return URDF._from_xml(node, path)
-
-    def _validate_joints(self):
-        """Raise an exception of any joints are invalidly specified.
-        Checks for the following:
-        - Joint parents are valid link names.
-        - Joint children are valid link names that aren't the same as parent.
-        - Joint mimics have valid joint names that aren't the same joint.
-        Returns
-        -------
-        actuated_joints : list of :class:`.Joint`
-            The joints in the model that are independently controllable.
-        """
-        actuated_joints = []
-        for joint in self.joints:
-            if joint.parent not in self._link_map:
-                raise ValueError('Joint {} has invalid parent link name {}'
-                                 .format(joint.name, joint.parent))
-            if joint.child not in self._link_map:
-                raise ValueError('Joint {} has invalid child link name {}'
-                                 .format(joint.name, joint.child))
-            if joint.child == joint.parent:
-                raise ValueError('Joint {} has matching parent and child'
-                                 .format(joint.name))
-            if joint.mimic is not None:
-                if joint.mimic.joint not in self._joint_map:
-                    raise ValueError(
-                        'Joint {} has an invalid mimic joint name {}'
-                        .format(joint.name, joint.mimic.joint)
-                    )
-                if joint.mimic.joint == joint.name:
-                    raise ValueError(
-                        'Joint {} set up to mimic itself'
-                        .format(joint.mimic.joint)
-                    )
-            elif joint.joint_type != 'fixed':
-                actuated_joints.append(joint)
-
-        # Do a depth-first search
-        return actuated_joints
 
     def _validate_transmissions(self):
         """Raise an exception of any transmissions are invalidly specified.
@@ -2265,78 +1902,9 @@ class URDF(URDFType):
         """
         for t in self.transmissions:
             for joint in t.joints:
-                if joint.name not in self._joint_map:
+                if joint.name not in self._joint_map:   # pragma nocover
                     raise ValueError('Transmission {} has invalid joint name '
                                      '{}'.format(t.name, joint.name))
-
-    def _process_cfg(self, cfg):
-        """Process a joint configuration spec into a dictionary mapping
-        joints to configuration values.
-        """
-        joint_cfg = {}
-        if cfg is None:
-            return joint_cfg
-        if isinstance(cfg, dict):
-            for joint in cfg:
-                if isinstance(joint, str):
-                    joint_cfg[self._joint_map[joint]] = cfg[joint]
-                elif isinstance(joint, Joint):
-                    joint_cfg[joint] = cfg[joint]
-        elif isinstance(cfg, (list, tuple, np.ndarray)):
-            if len(cfg) != len(self.actuated_joints):
-                raise ValueError(
-                    'Cfg must have same length as actuated joints '
-                    'if specified as a numerical array')
-            for joint, value in zip(self.actuated_joints, cfg):
-                joint_cfg[joint] = value
-        else:
-            raise TypeError('Invalid type for config')
-        return joint_cfg
-
-    def _process_cfgs(self, cfgs):
-        """
-        Process a list of joint configurations into a dictionary mapping
-        joints to configuration values.
-        This should result in a dict mapping each joint to a list of cfg
-        values, one per joint.
-        """
-        joint_cfg = {j: [] for j in self.actuated_joints}
-        n_cfgs = None
-        if isinstance(cfgs, dict):
-            for joint in cfgs:
-                if isinstance(joint, str):
-                    joint_cfg[self._joint_map[joint]] = cfgs[joint]
-                else:
-                    joint_cfg[joint] = cfgs[joint]
-                if n_cfgs is None:
-                    n_cfgs = len(cfgs[joint])
-        elif isinstance(cfgs, (list, tuple, np.ndarray)):
-            n_cfgs = len(cfgs)
-            if isinstance(cfgs[0], dict):
-                for cfg in cfgs:
-                    for joint in cfg:
-                        if isinstance(joint, str):
-                            joint_cfg[
-                                self._joint_map[joint]].append(cfg[joint])
-                        else:
-                            joint_cfg[joint].append(cfg[joint])
-            elif cfgs[0] is None:
-                pass
-            else:
-                cfgs = np.asanyarray(cfgs, dtype=np.float64)
-                for i, j in enumerate(self.actuated_joints):
-                    joint_cfg[j] = cfgs[:, i]
-        else:  # pragma nocover
-            raise ValueError('Incorrectly formatted config array')
-
-        for j in joint_cfg:
-            if len(joint_cfg[j]) == 0:
-                joint_cfg[j] = None
-            elif len(joint_cfg[j]) != n_cfgs:  # pragma nocover
-                raise ValueError(
-                    'Inconsistent number of configurations for joints')
-
-        return joint_cfg, n_cfgs
 
     @classmethod
     def _from_xml(cls, node, path):
