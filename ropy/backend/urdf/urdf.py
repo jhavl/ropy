@@ -203,24 +203,6 @@ class Box(URDFType):
     def size(self, value):
         self._size = np.asanyarray(value).astype(np.float64)
 
-    def copy(self, prefix='', scale=None):
-        """Create a deep copy with the prefix applied to all names.
-        Parameters
-        ----------
-        prefix : str
-            A prefix to apply to all names.
-        Returns
-        -------
-        :class:`.Box`
-            A deep copy.
-        """
-        if scale is None:
-            scale = 1.0
-        b = Box(
-            size=self.size.copy() * scale,
-        )
-        return b
-
 
 class Cylinder(URDFType):
     """A cylinder whose center is at the local origin.
@@ -262,34 +244,6 @@ class Cylinder(URDFType):
     def length(self, value):
         self._length = float(value)
 
-    def copy(self, prefix='', scale=None):
-        """Create a deep copy with the prefix applied to all names.
-        Parameters
-        ----------
-        prefix : str
-            A prefix to apply to all names.
-        Returns
-        -------
-        :class:`.Cylinder`
-            A deep copy.
-        """
-        if scale is None:
-            scale = 1.0
-        if isinstance(scale, (list, np.ndarray)):
-            if scale[0] != scale[1]:
-                raise ValueError(
-                    'Cannot rescale cylinder geometry with asymmetry in x/y')
-            c = Cylinder(
-                radius=self.radius * scale[0],
-                length=self.length * scale[2],
-            )
-        else:
-            c = Cylinder(
-                radius=self.radius * scale,
-                length=self.length * scale,
-            )
-        return c
-
 
 class Sphere(URDFType):
     """A sphere whose center is at the local origin.
@@ -315,28 +269,6 @@ class Sphere(URDFType):
     @radius.setter
     def radius(self, value):
         self._radius = float(value)
-
-    def copy(self, prefix='', scale=None):
-        """Create a deep copy with the prefix applied to all names.
-        Parameters
-        ----------
-        prefix : str
-            A prefix to apply to all names.
-        Returns
-        -------
-        :class:`.Sphere`
-            A deep copy.
-        """
-        if scale is None:
-            scale = 1.0
-        if isinstance(scale, (list, np.ndarray)):
-            if scale[0] != scale[1] or scale[0] != scale[2]:
-                raise ValueError('Spheres do not support non-uniform scaling!')
-            scale = scale[0]
-        s = Sphere(
-            radius=self.radius * scale,
-        )
-        return s
 
 
 class Mesh(URDFType):
@@ -386,31 +318,6 @@ class Mesh(URDFType):
     def _from_xml(cls, node, path):
         kwargs = cls._parse(node, path)
         return Mesh(**kwargs)
-
-    def copy(self, prefix='', scale=None):
-        """Create a deep copy with the prefix applied to all names.
-        Parameters
-        ----------
-        prefix : str
-            A prefix to apply to all names.
-        Returns
-        -------
-        :class:`.Sphere`
-            A deep copy.
-        """
-        if scale is not None:
-            sm1 = np.eye(4)
-            if isinstance(scale, (list, np.ndarray)):
-                sm1[:3, :3] = np.diag(scale)
-            else:
-                sm1[:3, :3] = np.diag(np.repeat(scale, 3))
-        base, fn = os.path.split(self.filename)
-        fn = '{}{}'.format(prefix, self.filename)
-        m = Mesh(
-            filename=os.path.join(base, fn),
-            scale=(self.scale.copy() if self.scale is not None else None)
-        )
-        return m
 
 
 class Geometry(URDFType):
@@ -479,7 +386,7 @@ class Geometry(URDFType):
     @cylinder.setter
     def cylinder(self, value):
         if value is not None and not isinstance(value, Cylinder):
-            raise TypeError('Expected Cylinder type')
+            raise TypeError('Expected Cylinder type')   # pragma nocover
         self._cylinder = value
 
     @property
@@ -491,7 +398,7 @@ class Geometry(URDFType):
     @sphere.setter
     def sphere(self, value):
         if value is not None and not isinstance(value, Sphere):
-            raise TypeError('Expected Sphere type')
+            raise TypeError('Expected Sphere type')   # pragma nocover
         self._sphere = value
 
     @property
@@ -503,11 +410,11 @@ class Geometry(URDFType):
     @mesh.setter
     def mesh(self, value):
         if value is not None and not isinstance(value, Mesh):
-            raise TypeError('Expected Mesh type')
+            raise TypeError('Expected Mesh type')   # pragma nocover
         self._mesh = value
 
     @property
-    def geometry(self):
+    def geometry(self):   # pragma nocover
         """:class:`.Box`, :class:`.Cylinder`, :class:`.Sphere`, or
         :class:`.Mesh` : The valid geometry element.
         """
@@ -520,33 +427,6 @@ class Geometry(URDFType):
         if self.mesh is not None:
             return self.mesh
         return None
-
-    def copy(self, prefix='', scale=None):
-        """Create a deep copy with the prefix applied to all names.
-        Parameters
-        ----------
-        prefix : str
-            A prefix to apply to all names.
-        Returns
-        -------
-        :class:`.Geometry`
-            A deep copy.
-        """
-        v = Geometry(
-            box=(
-                self.box.copy(prefix=prefix, scale=scale)
-                if self.box else None),
-            cylinder=(
-                self.cylinder.copy(prefix=prefix, scale=scale)
-                if self.cylinder else None),
-            sphere=(
-                self.sphere.copy(prefix=prefix, scale=scale)
-                if self.sphere else None),
-            mesh=(
-                self.mesh.copy(prefix=prefix, scale=scale)
-                if self.mesh else None),
-        )
-        return v
 
 
 class Collision(URDFType):
@@ -584,7 +464,7 @@ class Collision(URDFType):
 
     @geometry.setter
     def geometry(self, value):
-        if not isinstance(value, Geometry):
+        if not isinstance(value, Geometry):   # pragma nocover
             raise TypeError('Must set geometry with Geometry object')
         self._geometry = value
 
@@ -616,28 +496,6 @@ class Collision(URDFType):
         kwargs['origin'] = parse_origin(node)
         return Collision(**kwargs)
 
-    def copy(self, prefix='', scale=None):
-        """Create a deep copy of the visual with the prefix applied to all names.
-        Parameters
-        ----------
-        prefix : str
-            A prefix to apply to all joint and link names.
-        Returns
-        -------
-        :class:`.Visual`
-            A deep copy of the visual.
-        """
-        origin = self.origin.copy()
-        if scale is not None:
-            if not isinstance(scale, (list, np.ndarray)):
-                scale = np.repeat(scale, 3)
-            origin[:3, 3] *= scale
-        return Collision(
-            name='{}{}'.format(prefix, self.name),
-            origin=origin,
-            geometry=self.geometry.copy(prefix=prefix, scale=scale),
-        )
-
 
 class Visual(URDFType):
     """Visual properties of a link.
@@ -658,7 +516,6 @@ class Visual(URDFType):
     }
     _ELEMENTS = {
         'geometry': (Geometry, True, False),
-        # 'material': (Material, False, False),
     }
     _TAG = 'visual'
 
@@ -667,7 +524,6 @@ class Visual(URDFType):
         geometry.ob.base = origin
         self.name = name
         self.origin = origin
-        # self.material = material
 
     @property
     def geometry(self):
@@ -677,7 +533,7 @@ class Visual(URDFType):
 
     @geometry.setter
     def geometry(self, value):
-        if not isinstance(value, Geometry):
+        if not isinstance(value, Geometry):   #pragma nocover
             raise TypeError('Must set geometry with Geometry object')
         self._geometry = value
 
@@ -703,49 +559,11 @@ class Visual(URDFType):
     def origin(self, value):
         self._origin = configure_origin(value)
 
-    # @property
-    # def material(self):
-    #     """:class:`.Material` : The material for this element.
-    #     """
-    #     return self._material
-
-    # @material.setter
-    # def material(self, value):
-    #     if value is not None:
-    #         if not isinstance(value, Material):
-    #             raise TypeError('Must set material with Material object')
-    #     self._material = value
-
     @classmethod
     def _from_xml(cls, node, path):
         kwargs = cls._parse(node, path)
         kwargs['origin'] = parse_origin(node)
         return Visual(**kwargs)
-
-    def copy(self, prefix='', scale=None):
-        """Create a deep copy of the visual with the prefix applied to all names.
-        Parameters
-        ----------
-        prefix : str
-            A prefix to apply to all joint and link names.
-        Returns
-        -------
-        :class:`.Visual`
-            A deep copy of the visual.
-        """
-        origin = self.origin.copy()
-        if scale is not None:
-            if not isinstance(scale, (list, np.ndarray)):
-                scale = np.repeat(scale, 3)
-            origin[:3, 3] *= scale
-        return Visual(
-            geometry=self.geometry.copy(prefix=prefix, scale=scale),
-            name='{}{}'.format(prefix, self.name),
-            origin=origin,
-            # material=(
-            #     self.material.copy(prefix=prefix)
-            #     if self.material else None),
-        )
 
 
 class Inertial(URDFType):
@@ -786,7 +604,7 @@ class Inertial(URDFType):
     @inertia.setter
     def inertia(self, value):
         value = np.asanyarray(value).astype(np.float64)
-        if not np.allclose(value, value.T):
+        if not np.allclose(value, value.T):  #pragma nocover
             raise ValueError('Inertia must be a symmetric matrix')
         self._inertia = value
 
@@ -818,36 +636,13 @@ class Inertial(URDFType):
         ], dtype=np.float64)
         return Inertial(mass=mass, inertia=inertia, origin=origin)
 
-    def copy(self, prefix='', mass=None, origin=None, inertia=None):
-        """Create a deep copy of the visual with the prefix applied to all names.
-        Parameters
-        ----------
-        prefix : str
-            A prefix to apply to all joint and link names.
-        Returns
-        -------
-        :class:`.Inertial`
-            A deep copy of the visual.
-        """
-        if mass is None:
-            mass = self.mass
-        if origin is None:
-            origin = self.origin.copy()
-        if inertia is None:
-            inertia = self.inertia.copy()
-        return Inertial(
-            mass=mass,
-            inertia=inertia,
-            origin=origin,
-        )
-
 
 ###############################################################################
 # Joint types
 ###############################################################################
 
 
-class JointCalibration(URDFType):
+class JointCalibration(URDFType):  #pragma nocover
     """The reference positions of the joint.
     Parameters
     ----------
