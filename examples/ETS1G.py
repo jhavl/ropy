@@ -64,7 +64,7 @@ class Exp(object):
         # Step the quadratic robot
         if not self.rQ.arrived and not self.rQ.fail:
             try:
-                self.step_q(self.rQ, self.TQ)
+                self.step_q(self.rQ, self.TQ, 1)
             except np.linalg.LinAlgError:
                 self.rQ.fail = True
                 self.rQ.s = True
@@ -74,7 +74,7 @@ class Exp(object):
         # Step the rrmc robot
         if not self.rR.arrived and not self.rR.fail:
             try:
-                self.step_r(self.rR, self.TR)
+                self.step_q(self.rR, self.TR, 10)
             except np.linalg.LinAlgError:
                 self.rR.fail = True
                 self.rR.s = True
@@ -162,8 +162,8 @@ class Exp(object):
         # Set desired poses
         self.TQ, self.TR = self._find_pose((self.rQ, self.rR))
 
-    def step_q(self, robot, Ts):
-        ps = 0.05
+    def step_q(self, robot, Ts, gain):
+        ps = 0.005
         pi = 0.9
 
         e, m, _ = self.state(robot, Ts)
@@ -184,7 +184,7 @@ class Exp(object):
 
         Q = np.eye(6 + 6)
         Q[:6, :6] *= Y
-        Q[6:, 6:] = (1 / e) * np.eye(6)
+        Q[6:, 6:] = gain * (1 / e) * np.eye(6)
         Aeq = np.c_[robot.jacobe(), np.eye(6)]
         beq = v.reshape((6,))
         c = np.r_[-robot.jacobm().reshape((6,)), np.zeros(6)]
