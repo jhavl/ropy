@@ -61,7 +61,7 @@ setup(
 
     install_requires=[
         'numpy',
-        'spatialmath-python>=0.7.1',
+        'spatialmath-python==0.7.1',
         'scipy',
         'matplotlib']
 
