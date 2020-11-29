@@ -3,6 +3,10 @@
 [![Coverage](https://codecov.io/gh/jhavl/ropy/branch/master/graph/badge.svg)](https://codecov.io/gh/jhavl/ropy)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+# Redirect
+
+This project has been succeeded by the [Robotics Toolbox for Python](https://github.com/petercorke/robotics-toolbox-python). Most capabilities found in this package have been renovated and incorporated into the [Robotics Toolbox for Python](https://github.com/petercorke/robotics-toolbox-python).
+
 # ropy
 A robotics library for Python
 
